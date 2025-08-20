@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-    serverComponentsExternalPackages: ['@vitality/ai-service', '@vitality/auth', '@vitality/emotion-detection', '@vitality/voice-processing'],
-  },
   transpilePackages: [
     '@vitality/ai-service',
     '@vitality/auth',
