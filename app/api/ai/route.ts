@@ -1,13 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/lib/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { AuthService } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
     // Get authorization header
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const authHeader = req.headers.get("authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json(
-        { success: false, error: 'Authentication required' },
+        { success: false, error: "Authentication required" },
         { status: 401 }
       );
     }
@@ -16,27 +16,27 @@ export async function POST(req: NextRequest) {
     const user = await AuthService.authenticate(token);
     if (!user) {
       return NextResponse.json(
-        { success: false, error: 'Invalid token' },
+        { success: false, error: "Invalid token" },
         { status: 401 }
       );
     }
 
-    const { prompt, history = [], context = '' } = await req.json();
+    const { prompt, history = [], context = "" } = await req.json();
 
-    if (!prompt || typeof prompt !== 'string') {
+    if (!prompt || typeof prompt !== "string") {
       return NextResponse.json(
-        { success: false, error: 'Valid prompt is required' },
+        { success: false, error: "Valid prompt is required" },
         { status: 400 }
       );
     }
 
-    const OLLAMA_URL = process.env.OLLAMA_API_BASE_URL || 'http://localhost:11434';
-    const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3';
+    const OLLAMA_URL = process.env.OLLAMA_API_BASE_URL || "http://localhost:11434";
+    const OLLAMA_MODEL = process.env.OLLAMA_MODEL || "llama3";
 
     // Prepare the conversation history
     const messages = [
       {
-        role: 'system',
+        role: "system",
         content: `You are an AI Life Companion - a supportive, empathetic, and knowledgeable assistant designed to help users with their personal growth, goals, health, and overall well-being. You have access to universal knowledge and provide thoughtful, caring responses. Always be encouraging, understanding, and helpful while maintaining appropriate boundaries.
 
 Key traits:
@@ -46,23 +46,23 @@ Key traits:
 - Respectful of privacy and boundaries
 - Focused on the user's well-being and growth
 
-Context: ${context}`
+Context: ${context}`,
       },
       ...history.map((msg: any) => ({
-        role: msg.role || 'user',
-        content: msg.content
+        role: msg.role || "user",
+        content: msg.content,
       })),
       {
-        role: 'user',
-        content: prompt
-      }
+        role: "user",
+        content: prompt,
+      },
     ];
 
     // Call Ollama API
     const response = await fetch(`${OLLAMA_URL}/api/chat`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         model: OLLAMA_MODEL,
@@ -81,7 +81,7 @@ Context: ${context}`
     }
 
     const data = await response.json();
-    const aiResponse = data.message?.content || 'I apologize, but I encountered an error processing your request.';
+    const aiResponse = data.message?.content || "I apologize, but I encountered an error processing your request.";
 
     return NextResponse.json({
       success: true,
@@ -91,12 +91,12 @@ Context: ${context}`
     });
 
   } catch (error) {
-    console.error('AI chat error:', error);
+    console.error("AI chat error:", error);
     return NextResponse.json(
-      { 
-        success: false, 
-        error: 'Failed to connect to the local AI model. Please ensure Ollama is running.',
-        details: error instanceof Error ? error.message : 'Unknown error'
+      {
+        success: false,
+        error: "Failed to connect to the local AI model. Please ensure Ollama is running.",
+        details: error instanceof Error ? error.message : "Unknown error",
       },
       { status: 500 }
     );

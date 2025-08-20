@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Slider } from '@/components/ui/slider';
-import { Smile, Meh, Frown, Heart, Zap, Coffee, Book, Music, Users, Home } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
+import { Smile, Meh, Frown, Heart, Zap, Coffee, Book, Music, Users, Home } from "lucide-react";
+import { toast } from "sonner";
 
 interface MoodEntry {
   moodScore: number;
@@ -17,34 +17,34 @@ interface MoodEntry {
 }
 
 const moodIcons = [
-  { score: 1, icon: Frown, label: 'Very Low', color: 'text-red-500' },
-  { score: 2, icon: Frown, label: 'Low', color: 'text-orange-500' },
-  { score: 3, icon: Meh, label: 'Below Average', color: 'text-yellow-500' },
-  { score: 4, icon: Meh, label: 'Average', color: 'text-yellow-400' },
-  { score: 5, icon: Meh, label: 'Neutral', color: 'text-gray-500' },
-  { score: 6, icon: Smile, label: 'Above Average', color: 'text-blue-400' },
-  { score: 7, icon: Smile, label: 'Good', color: 'text-blue-500' },
-  { score: 8, icon: Heart, label: 'Great', color: 'text-pink-500' },
-  { score: 9, icon: Heart, label: 'Excellent', color: 'text-pink-600' },
-  { score: 10, icon: Zap, label: 'Amazing', color: 'text-purple-600' },
+  { score: 1, icon: Frown, label: "Very Low", color: "text-red-500" },
+  { score: 2, icon: Frown, label: "Low", color: "text-orange-500" },
+  { score: 3, icon: Meh, label: "Below Average", color: "text-yellow-500" },
+  { score: 4, icon: Meh, label: "Average", color: "text-yellow-400" },
+  { score: 5, icon: Meh, label: "Neutral", color: "text-gray-500" },
+  { score: 6, icon: Smile, label: "Above Average", color: "text-blue-400" },
+  { score: 7, icon: Smile, label: "Good", color: "text-blue-500" },
+  { score: 8, icon: Heart, label: "Great", color: "text-pink-500" },
+  { score: 9, icon: Heart, label: "Excellent", color: "text-pink-600" },
+  { score: 10, icon: Zap, label: "Amazing", color: "text-purple-600" },
 ];
 
 const suggestedTags = [
-  { icon: Coffee, label: 'work' },
-  { icon: Home, label: 'family' },
-  { icon: Users, label: 'social' },
-  { icon: Music, label: 'hobby' },
-  { icon: Book, label: 'learning' },
-  { icon: Zap, label: 'stress' },
-  { icon: Heart, label: 'love' },
-  { icon: Smile, label: 'achievement' },
+  { icon: Coffee, label: "work" },
+  { icon: Home, label: "family" },
+  { icon: Users, label: "social" },
+  { icon: Music, label: "hobby" },
+  { icon: Book, label: "learning" },
+  { icon: Zap, label: "stress" },
+  { icon: Heart, label: "love" },
+  { icon: Smile, label: "achievement" },
 ];
 
 export default function DailyMoodTracker() {
   const [moodScore, setMoodScore] = useState(5);
-  const [notes, setNotes] = useState('');
+  const [notes, setNotes] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState('');
+  const [newTag, setNewTag] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const currentMood = moodIcons.find(mood => mood.score === moodScore);
@@ -52,7 +52,7 @@ export default function DailyMoodTracker() {
   const handleAddTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim().toLowerCase())) {
       setTags([...tags, newTag.trim().toLowerCase()]);
-      setNewTag('');
+      setNewTag("");
     }
   };
 
@@ -66,18 +66,18 @@ export default function DailyMoodTracker() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async() => {
     if (moodScore < 1 || moodScore > 10) {
-      toast.error('Please select a valid mood score');
+      toast.error("Please select a valid mood score");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/mental-health/mood', {
-        method: 'POST',
+      const response = await fetch("/api/mental-health/mood", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           moodScore,
@@ -88,13 +88,13 @@ export default function DailyMoodTracker() {
 
       if (response.ok) {
         const result = await response.json();
-        toast.success('Mood entry saved successfully!');
-        
+        toast.success("Mood entry saved successfully!");
+
         // Reset form
         setMoodScore(5);
-        setNotes('');
+        setNotes("");
         setTags([]);
-        
+
         // Show AI insight if available
         if (result.aiInsight) {
           toast.info(result.aiInsight, {
@@ -103,10 +103,10 @@ export default function DailyMoodTracker() {
         }
       } else {
         const error = await response.json();
-        toast.error(error.error || 'Failed to save mood entry');
+        toast.error(error.error || "Failed to save mood entry");
       }
     } catch (error) {
-      toast.error('Failed to save mood entry');
+      toast.error("Failed to save mood entry");
     } finally {
       setIsSubmitting(false);
     }
@@ -132,7 +132,7 @@ export default function DailyMoodTracker() {
             <p className="text-lg font-medium">{currentMood?.label}</p>
             <p className="text-sm text-muted-foreground">Score: {moodScore}/10</p>
           </div>
-          
+
           <Slider
             value={[moodScore]}
             onValueChange={(value) => setMoodScore(value[0])}
@@ -141,7 +141,7 @@ export default function DailyMoodTracker() {
             step={1}
             className="w-full"
           />
-          
+
           <div className="flex justify-between text-xs text-muted-foreground">
             <span>Very Low</span>
             <span>Very High</span>
@@ -163,7 +163,7 @@ export default function DailyMoodTracker() {
         {/* Tags Section */}
         <div className="space-y-3">
           <label className="text-sm font-medium">Tags (optional)</label>
-          
+
           {/* Suggested Tags */}
           <div className="flex flex-wrap gap-2">
             {suggestedTags.map((tag) => (
@@ -187,7 +187,7 @@ export default function DailyMoodTracker() {
               placeholder="Add custom tag..."
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+              onKeyPress={(e) => e.key === "Enter" && handleAddTag()}
               className="flex-1"
             />
             <Button
@@ -224,7 +224,7 @@ export default function DailyMoodTracker() {
           className="w-full"
           size="lg"
         >
-          {isSubmitting ? 'Saving...' : 'Save Mood Entry'}
+          {isSubmitting ? "Saving..." : "Save Mood Entry"}
         </Button>
       </CardContent>
     </Card>

@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { ClipboardList, ArrowLeft, ArrowRight, CheckCircle, Brain, AlertCircle } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import { Badge } from "@/components/ui/badge";
+import { ClipboardList, ArrowLeft, ArrowRight, CheckCircle, Brain, AlertCircle } from "lucide-react";
+import { toast } from "sonner";
 
 interface AssessmentQuestion {
   id: number;
@@ -192,22 +192,22 @@ const gad7Questions: AssessmentQuestion[] = [
 ];
 
 const assessments = {
-  'PHQ-9': {
-    title: 'Patient Health Questionnaire (PHQ-9)',
-    description: 'A 9-item depression screening tool',
+  "PHQ-9": {
+    title: "Patient Health Questionnaire (PHQ-9)",
+    description: "A 9-item depression screening tool",
     questions: phq9Questions,
     maxScore: 27,
   },
-  'GAD-7': {
-    title: 'Generalized Anxiety Disorder (GAD-7)',
-    description: 'A 7-item anxiety screening tool',
+  "GAD-7": {
+    title: "Generalized Anxiety Disorder (GAD-7)",
+    description: "A 7-item anxiety screening tool",
     questions: gad7Questions,
     maxScore: 21,
   },
 };
 
 export default function AssessmentWizard() {
-  const [selectedAssessment, setSelectedAssessment] = useState<string>('');
+  const [selectedAssessment, setSelectedAssessment] = useState<string>("");
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<{ [key: number]: number }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -236,8 +236,10 @@ export default function AssessmentWizard() {
     }
   };
 
-  const handleSubmit = async () => {
-    if (!selectedAssessment) return;
+  const handleSubmit = async() => {
+    if (!selectedAssessment) {
+return;
+}
 
     const totalScore = Object.values(answers).reduce((sum, score) => sum + score, 0);
     const resultData: AssessmentResult = {
@@ -248,10 +250,10 @@ export default function AssessmentWizard() {
 
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/mental-health/assessment', {
-        method: 'POST',
+      const response = await fetch("/api/mental-health/assessment", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           type: selectedAssessment,
@@ -265,35 +267,49 @@ export default function AssessmentWizard() {
           ...resultData,
           summary: data.summary,
         });
-        toast.success('Assessment completed successfully!');
+        toast.success("Assessment completed successfully!");
       } else {
-        toast.error('Failed to submit assessment');
+        toast.error("Failed to submit assessment");
       }
     } catch (error) {
-      toast.error('Failed to submit assessment');
+      toast.error("Failed to submit assessment");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   const getSeverityLevel = (score: number, type: string) => {
-    if (type === 'PHQ-9') {
-      if (score <= 4) return { level: 'Minimal', color: 'bg-green-100 text-green-800' };
-      if (score <= 9) return { level: 'Mild', color: 'bg-yellow-100 text-yellow-800' };
-      if (score <= 14) return { level: 'Moderate', color: 'bg-orange-100 text-orange-800' };
-      if (score <= 19) return { level: 'Moderately Severe', color: 'bg-red-100 text-red-800' };
-      return { level: 'Severe', color: 'bg-red-200 text-red-900' };
-    } else if (type === 'GAD-7') {
-      if (score <= 4) return { level: 'Minimal', color: 'bg-green-100 text-green-800' };
-      if (score <= 9) return { level: 'Mild', color: 'bg-yellow-100 text-yellow-800' };
-      if (score <= 14) return { level: 'Moderate', color: 'bg-orange-100 text-orange-800' };
-      return { level: 'Severe', color: 'bg-red-100 text-red-800' };
+    if (type === "PHQ-9") {
+      if (score <= 4) {
+return { level: "Minimal", color: "bg-green-100 text-green-800" };
+}
+      if (score <= 9) {
+return { level: "Mild", color: "bg-yellow-100 text-yellow-800" };
+}
+      if (score <= 14) {
+return { level: "Moderate", color: "bg-orange-100 text-orange-800" };
+}
+      if (score <= 19) {
+return { level: "Moderately Severe", color: "bg-red-100 text-red-800" };
+}
+      return { level: "Severe", color: "bg-red-200 text-red-900" };
+    } else if (type === "GAD-7") {
+      if (score <= 4) {
+return { level: "Minimal", color: "bg-green-100 text-green-800" };
+}
+      if (score <= 9) {
+return { level: "Mild", color: "bg-yellow-100 text-yellow-800" };
+}
+      if (score <= 14) {
+return { level: "Moderate", color: "bg-orange-100 text-orange-800" };
+}
+      return { level: "Severe", color: "bg-red-100 text-red-800" };
     }
-    return { level: 'Unknown', color: 'bg-gray-100 text-gray-800' };
+    return { level: "Unknown", color: "bg-gray-100 text-gray-800" };
   };
 
   const handleRestart = () => {
-    setSelectedAssessment('');
+    setSelectedAssessment("");
     setCurrentStep(0);
     setAnswers({});
     setResult(null);
@@ -333,15 +349,15 @@ export default function AssessmentWizard() {
               </CardContent>
             </Card>
           ))}
-          
+
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
             <div className="flex items-start gap-3">
               <AlertCircle className="h-5 w-5 text-blue-600 mt-0.5" />
               <div className="text-sm text-blue-800">
                 <p className="font-medium mb-1">Important Note:</p>
                 <p>
-                  These assessments are for self-screening purposes only and should not replace professional medical advice. 
-                  If you're experiencing severe symptoms, please consult with a mental health professional.
+                  These assessments are for self-screening purposes only and should not replace professional medical advice.
+                  If you&apos;re experiencing severe symptoms, please consult with a mental health professional.
                 </p>
               </div>
             </div>
@@ -394,7 +410,7 @@ export default function AssessmentWizard() {
               <div key={question.id} className="text-sm">
                 <p className="font-medium">{question.id}. {question.text}</p>
                 <p className="text-muted-foreground">
-                  Response: {question.options.find(opt => opt.value === answers[question.id])?.label || 'Not answered'}
+                  Response: {question.options.find(opt => opt.value === answers[question.id])?.label || "Not answered"}
                 </p>
               </div>
             ))}
@@ -436,7 +452,7 @@ export default function AssessmentWizard() {
               <h3 className="text-lg font-medium mb-4">
                 {currentQuestion.text}
               </h3>
-              
+
               <div className="space-y-3">
                 {currentQuestion.options.map((option) => (
                   <button
@@ -444,8 +460,8 @@ export default function AssessmentWizard() {
                     onClick={() => handleAnswerSelect(currentQuestion.id, option.value)}
                     className={`w-full p-4 text-left rounded-lg border-2 transition-all ${
                       answers[currentQuestion.id] === option.value
-                        ? 'border-primary bg-primary/5'
-                        : 'border-border hover:border-primary/50'
+                        ? "border-primary bg-primary/5"
+                        : "border-border hover:border-primary/50"
                     }`}
                   >
                     <div className="flex items-center justify-between">
@@ -479,7 +495,7 @@ export default function AssessmentWizard() {
                   disabled={!canProceed || isSubmitting}
                   className="flex items-center gap-2"
                 >
-                  {isSubmitting ? 'Submitting...' : 'Complete Assessment'}
+                  {isSubmitting ? "Submitting..." : "Complete Assessment"}
                 </Button>
               ) : (
                 <Button

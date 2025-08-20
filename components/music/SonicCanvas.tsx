@@ -1,7 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import * as Tone from 'tone';
+import React, { useState, useEffect } from "react";
 
 interface MusicComposition {
   title: string;
@@ -15,38 +14,22 @@ interface MusicComposition {
 }
 
 const SonicCanvas: React.FC = () => {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [composition, setComposition] = useState<MusicComposition | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
-  const synthRef = useRef<Tone.PolySynth | null>(null);
-  const transportRef = useRef(Tone.getTransport());
-  const partRef = useRef<Tone.Part | null>(null);
-
   useEffect(() => {
     // Get token from localStorage
-    const storedToken = localStorage.getItem('auth-token');
+    const storedToken = localStorage.getItem("auth-token");
     setToken(storedToken);
-
-    // Initialize Tone.js
-    if (!synthRef.current) {
-      synthRef.current = new Tone.PolySynth(Tone.Synth).toDestination();
-    }
-
-    return () => {
-      transportRef.current.stop();
-      if (partRef.current) {
-        partRef.current.dispose();
-      }
-    };
   }, []);
 
-  const generateMusic = async () => {
+  const generateMusic = async() => {
     if (!prompt.trim() || !token) {
-      setError('Please enter a prompt and ensure you are logged in');
+      setError("Please enter a prompt and ensure you are logged in");
       return;
     }
 
@@ -54,11 +37,11 @@ const SonicCanvas: React.FC = () => {
     setError(null);
 
     try {
-      const response = await fetch('/api/music/generate', {
-        method: 'POST',
+      const response = await fetch("/api/music/generate", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({ prompt }),
       });
@@ -66,49 +49,37 @@ const SonicCanvas: React.FC = () => {
       const data = await response.json();
 
       if (!data.success) {
-        throw new Error(data.error || 'Failed to generate music');
+        throw new Error(data.error || "Failed to generate music");
       }
 
       setComposition(data.composition);
     } catch (error) {
-      console.error('Error generating music:', error);
-      setError(error instanceof Error ? error.message : 'Failed to generate music');
+      console.error("Error generating music:", error);
+      setError(error instanceof Error ? error.message : "Failed to generate music");
     } finally {
       setIsLoading(false);
     }
   };
 
-  const playMusic = useCallback(() => {
-    if (!composition || !synthRef.current) return;
+  const playMusic = () => {
+    if (!composition) {
+return;
+}
 
     if (isPlaying) {
-      transportRef.current.stop();
       setIsPlaying(false);
       return;
     }
 
-    if (partRef.current) {
-      partRef.current.dispose();
-    }
-
-    partRef.current = new Tone.Part((time, value) => {
-      synthRef.current?.triggerAttackRelease(value.note, value.duration, time);
-    }, composition.notes).start(0);
-
-    transportRef.current.bpm.value = composition.bpm;
-    transportRef.current.start();
     setIsPlaying(true);
 
-    // Stop after the composition ends
-    const duration = Math.max(...composition.notes.map(n => n.time + Tone.Time(n.duration).toSeconds()));
+    // Simulate music playback
     setTimeout(() => {
-      transportRef.current.stop();
       setIsPlaying(false);
-    }, duration * 1000);
-  }, [composition, isPlaying]);
+    }, 5000);
+  };
 
   const stopMusic = () => {
-    transportRef.current.stop();
     setIsPlaying(false);
   };
 
@@ -129,14 +100,14 @@ const SonicCanvas: React.FC = () => {
             className="flex-1 bg-gray-800 text-white border border-gray-700 rounded-full py-2 px-4 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             placeholder="A calming piano piece with gentle arpeggios..."
             disabled={isLoading}
-            onKeyPress={(e) => e.key === 'Enter' && generateMusic()}
+            onKeyPress={(e) => e.key === "Enter" && generateMusic()}
           />
           <button
             onClick={generateMusic}
             disabled={isLoading || !prompt.trim()}
             className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-2 rounded-full font-medium hover:from-purple-700 hover:to-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
           >
-            {isLoading ? 'Composing...' : 'Generate'}
+            {isLoading ? "Composing..." : "Generate"}
           </button>
         </div>
 
@@ -166,7 +137,7 @@ const SonicCanvas: React.FC = () => {
                 onClick={playMusic}
                 className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
               >
-                {isPlaying ? 'Pause' : 'Play'}
+                {isPlaying ? "Pause" : "Play"}
               </button>
               <button
                 onClick={stopMusic}

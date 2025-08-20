@@ -1,315 +1,335 @@
-# AI Life Companion
+# steward-omni-max
 
-A revolutionary, self-hosted AI companion for life with complete privacy and zero cost. Experience personalized support, learning, creativity, and growth powered by local AI processing.
+**Hope: The Steward – Omni Max**
 
-## 🌟 Features
+A complete, self-hostable, privacy-first platform that evolves autonomously and respects ethics and compliance.
 
-### 🤖 AI Life Companion
-- **Personal AI Companion**: Face-to-face conversations with 3D avatar visualization
-- **Emotional Intelligence**: Empathetic responses and emotional support
-- **Memory & Context**: Remembers your preferences and conversation history
-- **Goal Assistance**: Help with setting and achieving personal goals
-- **Health Guidance**: Wellness advice and health tracking support
-
-### 🎵 Sonic Canvas
-- **AI Music Generation**: Create beautiful compositions from text descriptions
-- **Real-time Playback**: Listen to generated music instantly
-- **Custom Prompts**: Describe your musical vision in natural language
-- **Tone.js Integration**: High-quality audio synthesis
-
-### 🎓 AI Teacher
-- **Learning Companion**: Ask questions about any topic
-- **Contextual Responses**: Personalized learning based on your knowledge level
-- **Interactive Sessions**: Engaging educational conversations
-- **Knowledge Base**: Access to comprehensive information
-
-### 🎯 Goal Tracking
-- **Smart Goal Setting**: AI-assisted goal creation and planning
-- **Progress Monitoring**: Track your achievements and milestones
-- **Motivational Support**: Get encouragement and guidance
-- **Analytics**: Visual progress tracking and insights
-
-### 📝 Digital Journal
-- **Secure Journaling**: Private, encrypted journal entries
-- **AI Insights**: Get emotional analysis and patterns from your writing
-- **Mood Tracking**: Monitor your emotional well-being over time
-- **Tagging System**: Organize entries with custom tags
-
-### ❤️ Health & Wellness
-- **Mood Tracking**: Daily emotional state monitoring
-- **Sleep Quality**: Track and analyze sleep patterns
-- **Activity Monitoring**: Physical activity and wellness metrics
-- **AI Health Guidance**: Personalized wellness recommendations
-
-### 🔍 Smart Search
-- **AI-Powered Search**: Advanced search with semantic understanding
-- **Knowledge Indexing**: Intelligent content organization
-- **Quick Access**: Find information across all your data
-- **Search History**: Track and learn from your search patterns
-
-### 📊 Analytics Dashboard
-- **Usage Insights**: Track your AI interactions and patterns
-- **Progress Reports**: Visualize your growth and achievements
-- **Health Metrics**: Comprehensive wellness analytics
-- **Goal Analytics**: Detailed goal achievement tracking
-
-## 🛠️ Technology Stack
-
-### Core Technologies
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS
-- **Database**: PostgreSQL with Prisma ORM
-- **Authentication**: NextAuth.js with JWT
-- **AI Backend**: Ollama (local LLM inference)
-- **3D Graphics**: Three.js for avatar visualization
-- **Audio**: Tone.js for music synthesis
-- **Real-time**: WebSocket for live communication
-
-### Self-Hosted Architecture
-- **100% Local Processing**: All AI operations run on your hardware
-- **Zero External Dependencies**: No cloud APIs or external services
-- **Complete Privacy**: Your data never leaves your system
-- **Docker Deployment**: Easy containerized setup
-- **PostgreSQL Database**: Robust, scalable data storage
+[![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL%203.0-green.svg)](https://opensource.org/licenses/AGPL-3.0)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-green.svg)](https://nodejs.org/)
+[![pnpm](https://img.shields.io/badge/pnpm-8.x-blue.svg)](https://pnpm.io/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue.svg)](https://www.typescriptlang.org/)
 
 ## 🚀 Quick Start
 
+```bash
+# Clone the repository
+git clone https://github.com/your-org/steward-omni-max.git
+cd steward-omni-max
+
+# Setup and start the platform
+make setup
+make up PROFILE=free
+```
+
+Visit http://localhost:3000 and login with:
+- **Email:** demo@hope.local
+- **Password:** Passw0rd!
+
+## ✨ Features
+
+### 🤖 Ascended AI Core
+- **Personas:** Educator, Therapist, Creative, Legal Advocate, Financial Advisor, Coach, Engineer
+- **Memory Hooks:** Persistent context and learning
+- **"Why" Explanations:** Transparent reasoning with bias checks
+- **Disclaimers:** For sensitive topics and recommendations
+
+### 🏗️ Genesis Foundry
+- **Knowledge Mining:** Public data adapters and micro-model registry
+- **Knowledge Graph:** Personal knowledge network
+- **Free Service Generators:** Open-source alternatives
+
+### 🎯 Universal Concierge
+- **Task Automation:** Research, tutorials, design, travel planning, site creation
+- **Contract Analysis:** Legal document review and insights
+- **Budget Planning:** Financial optimization and goal setting
+- **Habit Coaching:** Behavioral change support
+- **Meeting Briefs:** AI-powered meeting preparation
+- **Code Review:** Technical assessment and suggestions
+- **Incident Runbooks:** Emergency response automation
+- **Translation & Summarization:** Multi-language support
+
+### 🌱 Life Modules
+
+#### Wellness
+- **Mental Health Assessment:** PHQ-9, GAD-7, and custom assessments
+- **Mood Tracking:** Daily mood entries with insights
+- **Coping Strategies:** Personalized stress management techniques
+
+#### Finance
+- **Budget Management:** Multi-category budgeting with alerts
+- **Transaction Tracking:** Automatic categorization and insights
+- **Financial Goals:** Goal setting and progress tracking
+
+#### Learning
+- **Skill Development:** Progress tracking with spaced repetition
+- **Habit Formation:** Daily habit logging and streak tracking
+- **Resource Management:** Learning material organization
+
+#### Creativity
+- **Creative Projects:** Project management for artistic endeavors
+- **Generated Assets:** AI-assisted creative content
+- **Media Preferences:** Personalized recommendations
+
+#### Community
+- **Community Building:** Group formation and management
+- **Event Planning:** Event creation and participation tracking
+- **Social Networking:** Post and comment system
+
+#### Automation
+- **Routine Automation:** Trigger-based automation workflows
+- **Smart Notifications:** Context-aware alerts
+- **Integration Hub:** Connector ecosystem
+
+### 🏠 Specialized Modules
+
+#### Empathic Resonance
+- **Family Circles:** Multi-generational family support
+- **Guided Conversations:** AI-facilitated family discussions
+- **Emotional Intelligence:** Relationship building tools
+
+#### Dream Weaver
+- **Generated Games:** AI-created educational games
+- **Activity Planning:** Personalized activity recommendations
+- **Creative Expression:** Artistic and imaginative development
+
+## 🏗️ Architecture
+
+### Monorepo Structure
+```
+/
+├── apps/
+│   ├── web/          # Next.js 14 (App Router, TS, Tailwind, shadcn/ui)
+│   ├── api/          # NestJS (TS), Prisma, Redis, BullMQ, Socket.io
+│   ├── broker/       # Job runners, connector orchestration
+│   ├── ext/          # Browser extension (MV3)
+│   ├── mobile/       # Expo (React Native) offline-first
+│   ├── desktop/      # Tauri desktop vault
+│   └── docs/         # Docusaurus documentation
+├── packages/
+│   ├── ui/           # Design system (Bloom theme)
+│   ├── types/        # Shared TypeScript types
+│   ├── config/       # ESLint, Prettier, Jest, Playwright
+│   ├── connectors/   # OAuth, webhooks, typed clients
+│   ├── rpa/          # Playwright-based RPA toolkit
+│   ├── graphs/       # Knowledge graph schema
+│   ├── guards/       # Consent & policy engine
+│   ├── agents/       # Multi-agent kernel
+│   ├── media/        # STT/TTS audio pipelines
+│   └── crdt/         # Yjs offline-first sync
+└── infra/
+    ├── docker/       # Hardened Dockerfiles
+    ├── k8s/          # Helm charts
+    ├── db/           # Prisma migrations & seeds
+    └── edge/         # Edge worker
+```
+
+### Technology Stack
+
+#### Frontend
+- **Next.js 14** with App Router
+- **TypeScript** with strict configuration
+- **Tailwind CSS** with custom Bloom theme
+- **shadcn/ui** components
+- **Radix UI** primitives
+- **Three.js** for 3D avatars
+- **WebRTC** for real-time communication
+- **Zustand** for state management
+- **TanStack Query** for data fetching
+
+#### Backend
+- **NestJS** with TypeScript
+- **Prisma ORM** with PostgreSQL
+- **Redis** for caching and sessions
+- **BullMQ** for job queues
+- **Socket.io** for real-time features
+- **Casbin** for RBAC authorization
+
+#### AI & ML
+- **Local-first:** Ollama with opt-in external models
+- **Embeddings:** pgvector for semantic search
+- **Speech:** Whisper.cpp and Piper for STT/TTS
+- **Vision:** CLIP for image understanding
+
+#### Security & Privacy
+- **Authentication:** NextAuth.js v5 with email/TOTP
+- **Authorization:** Casbin RBAC with scope-based access
+- **Encryption:** E2E encryption for sensitive data
+- **CSP:** Strict Content Security Policy
+- **GDPR:** Data export, deletion, and consent management
+
+#### Observability
+- **Logging:** Pino with correlation IDs
+- **Tracing:** OpenTelemetry
+- **Metrics:** Prometheus
+- **Health Checks:** /health and /ready endpoints
+
+## 🔧 Development
+
 ### Prerequisites
-1. **Docker & Docker Compose** installed
-2. **Ollama** installed from [ollama.com](https://ollama.com)
-3. **Node.js 18+** (for development)
+- **Node.js 20** LTS
+- **pnpm 8** or later
+- **Docker** and **Docker Compose**
+- **Git**
 
-### Installation
+### Setup
+```bash
+# Install dependencies
+make setup
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ai-life-companion
-   ```
+# Start development environment
+make up PROFILE=free
 
-2. **Install Ollama and download a model**
-   ```bash
-   # Install Ollama (follow instructions at ollama.com)
-   ollama pull llama3
-   ```
+# Run tests
+make test
 
-3. **Set up environment variables**
-   ```bash
-   cp .env.example .env.local
-   # Edit .env.local with your configuration
-   ```
-
-4. **Start the application**
-   ```bash
-   # Using Docker (recommended)
-   docker-compose up --build
-   
-   # Or for development
-   npm install
-   npm run dev
-   ```
-
-5. **Initialize the database**
-   ```bash
-   npm run init-db
-   ```
-
-6. **Access the application**
-   Open [http://localhost:3000](http://localhost:3000) in your browser
-
-## 📁 Project Structure
-
-```
-ai-life-companion/
-├── app/                          # Next.js App Router
-│   ├── api/                      # API routes
-│   │   ├── ai/                   # AI companion endpoints
-│   │   ├── auth/                 # Authentication endpoints
-│   │   ├── music/                # Music generation endpoints
-│   │   └── search/               # Search functionality
-│   ├── components/               # React components
-│   │   ├── ai/                   # AI companion components
-│   │   ├── music/                # Music generation components
-│   │   ├── learning/             # AI teacher components
-│   │   └── ui/                   # Shared UI components
-│   ├── lib/                      # Utility libraries
-│   │   ├── auth.ts               # Authentication utilities
-│   │   ├── db/                   # Database utilities
-│   │   ├── ai/                   # AI integration
-│   │   └── websocket/            # Real-time communication
-│   ├── layout.tsx                # Root layout
-│   └── page.tsx                  # Main application page
-├── prisma/                       # Database schema and migrations
-├── public/                       # Static assets
-├── data/                         # Local data storage
-├── docker-compose.yml            # Docker orchestration
-├── Dockerfile                    # Application container
-└── package.json                  # Dependencies and scripts
+# Build for production
+make build
 ```
 
-## 🔧 Configuration
-
-### Environment Variables
-
-Create a `.env.local` file with the following variables:
-
-```env
-# Database
-DATABASE_URL="postgresql://ailifecompanion:secure_password_123@localhost:5432/ailifecompanion?schema=public"
-
-# NextAuth.js
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-super-secret-nextauth-key"
-
-# Ollama Configuration
-OLLAMA_API_BASE_URL="http://localhost:11434"
-OLLAMA_MODEL="llama3"
-
-# JWT Secret
-JWT_SECRET="your-super-secret-jwt-key"
+### Available Commands
+```bash
+make help              # Show all available commands
+make setup             # Install dependencies and setup environment
+make lint              # Run ESLint with zero warnings
+make typecheck         # Run TypeScript strict checks
+make test              # Run all tests with coverage
+make build             # Build all packages and apps
+make docker            # Build Docker images
+make up                # Start development stack
+make down              # Stop development stack
+make clean             # Clean all artifacts
+make release           # Build production release
+make deploy            # Deploy to production
+make rotate-secrets    # Rotate secrets and re-seed users
+make backup            # Create database backup
+make restore           # Restore from backup
 ```
 
-### Ollama Model Selection
+## 🌐 Free-First Connector Fabric
 
-The application is configured to use `llama3` by default. You can change this by:
+### Identity & Auth
+- **Native:** Email + TOTP authentication
+- **Optional:** OpenID Connect integration
 
-1. **Downloading a different model**:
-   ```bash
-   ollama pull mistral
-   ollama pull codellama
-   ollama pull llama2
-   ```
+### Files & Notes
+- **Local Vault:** Encrypted local storage
+- **WebDAV:** Nextcloud, ownCloud integration
+- **File ETL:** Automatic vector indexing
 
-2. **Updating the environment variable**:
-   ```env
-   OLLAMA_MODEL="mistral"
-   ```
+### Productivity
+- **CalDAV/CardDAV:** Calendar and contact sync
+- **Markdown Vault:** Local document management
+- **Optional:** Notion, Slack, Google integration
+
+### Development & Operations
+- **Gitea:** Self-hosted Git server
+- **Grafana:** Monitoring dashboards
+- **Prometheus:** Metrics collection
+- **Loki:** Log aggregation
+
+### Finance
+- **CSV/OFX Import:** Manual data import
+- **Optional:** Plaid, Open Banking integration
+
+### Health
+- **Local FHIR Sandbox:** Health data management
+- **Optional:** SMART on FHIR integration
+
+### Messaging
+- **Matrix:** Decentralized messaging
+- **SMTP/IMAP:** Email integration
+
+### Social
+- **RSS:** Feed aggregation
+- **ActivityPub:** Federated social networking
+- **Optional:** External social media integration
+
+### IoT & Home
+- **Home Assistant:** Smart home automation
+- **Matter:** IoT device management
+- **Hue:** Philips Hue integration
+
+### Maps & Travel
+- **OpenStreetMap:** Open mapping data
+- **Nominatim:** Geocoding service
+- **Valhalla:** Routing engine
 
 ## 🔒 Security & Privacy
 
-### Data Protection
-- **End-to-End Encryption**: All sensitive data is encrypted
-- **Local Storage**: Your data never leaves your system
-- **No External APIs**: Complete privacy with local AI processing
-- **User Control**: Full control over your data and settings
+### Privacy-First Design
+- **Local AI:** Default to on-device processing
+- **Data Minimization:** Collect only necessary data
+- **Consent Management:** Granular consent controls
+- **Purpose Binding:** Data usage restrictions
 
-### Authentication
-- **JWT Tokens**: Secure session management
-- **Password Hashing**: bcrypt for secure password storage
-- **Session Management**: Automatic session cleanup
-- **Access Control**: Role-based permissions
+### Security Features
+- **E2E Encryption:** For sensitive communications
+- **Secure Cookies:** httpOnly, secure, sameSite
+- **CSP:** Strict Content Security Policy
+- **Rate Limiting:** API abuse prevention
+- **SSRF Protection:** Server-side request forgery prevention
+- **Secret Scanning:** Automated secret detection
 
-## 📈 Performance
+### Compliance
+- **GDPR:** Data protection compliance
+- **Accessibility:** WCAG AA compliance
+- **Bias Checks:** AI recommendation auditing
+- **Audit Logging:** Complete activity tracking
 
-### Optimization Features
-- **Server-Side Rendering**: Fast initial page loads
-- **Code Splitting**: Efficient bundle loading
-- **Caching**: Intelligent data caching
-- **Database Indexing**: Optimized queries
-- **WebSocket**: Real-time communication
+## 📚 Documentation
 
-### Resource Requirements
-- **Minimum RAM**: 8GB (16GB recommended for AI models)
-- **Storage**: 10GB for application + AI model size
-- **CPU**: Multi-core processor recommended
-- **GPU**: Optional, for faster AI inference
+- **Architecture:** System design and patterns
+- **Security & Privacy:** Security model and privacy controls
+- **Runbook:** Operational procedures
+- **API Reference:** Complete API documentation
+- **ADRs:** Architecture Decision Records
+- **Threat Model:** Security threat analysis
 
-## 🚀 Deployment
-
-### Docker Deployment (Recommended)
-```bash
-# Production deployment
-docker-compose -f docker-compose.prod.yml up -d
-
-# Development deployment
-docker-compose up --build
-```
-
-### Manual Deployment
-```bash
-# Install dependencies
-npm install
-
-# Build the application
-npm run build
-
-# Start the server
-npm start
-```
-
-### Cloud Deployment
-The application can be deployed to any cloud platform that supports Docker:
-- **AWS**: ECS or EC2 with Docker
-- **Google Cloud**: Cloud Run or GKE
-- **Azure**: Container Instances or AKS
-- **DigitalOcean**: App Platform or Droplets
+Visit http://localhost:3001 for complete documentation.
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-### Development Setup
-```bash
-# Clone the repository
-git clone <repository-url>
-cd ai-life-companion
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Run tests and linting
+5. Submit a pull request
 
-# Install dependencies
-npm install
-
-# Set up development environment
-cp .env.example .env.local
-
-# Start development server
-npm run dev
-
-# Run tests
-npm test
-
-# Run linting
-npm run lint
-```
+### Code Standards
+- **TypeScript:** Strict mode with no `any`
+- **ESLint:** Zero warnings policy
+- **Prettier:** Consistent formatting
+- **Tests:** 90%+ coverage required
+- **Accessibility:** WCAG AA compliance
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the GNU Affero General Public License v3.0 - see the [LICENSE](LICENSE) file for details.
+
+- **Apps/Services:** AGPL-3.0
+- **Libraries/Packages:** MIT
+- **Documentation:** CC-BY-SA 4.0
+
+See [COPYING.md](COPYING.md) for license obligations and [NOTICE](NOTICE) for third-party attributions.
+
+## 🆘 Support
+
+- **Documentation:** http://localhost:3001
+- **Issues:** [GitHub Issues](https://github.com/your-org/steward-omni-max/issues)
+- **Discussions:** [GitHub Discussions](https://github.com/your-org/steward-omni-max/discussions)
+- **Security:** security@steward-omni-max.org
 
 ## 🙏 Acknowledgments
 
-- **Ollama Team**: For the amazing local LLM framework
-- **Next.js Team**: For the excellent React framework
-- **Prisma Team**: For the powerful database toolkit
-- **Three.js Team**: For the 3D graphics library
-- **Tone.js Team**: For the audio synthesis library
-
-## 📞 Support
-
-- **Documentation**: [docs.ai-life-companion.com](https://docs.ai-life-companion.com)
-- **Issues**: [GitHub Issues](https://github.com/your-org/ai-life-companion/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/ai-life-companion/discussions)
-- **Email**: support@ai-life-companion.com
-
-## 🔮 Roadmap
-
-### Upcoming Features
-- **Voice Interaction**: Speech-to-text and text-to-speech
-- **Advanced Avatar**: More sophisticated 3D character models
-- **Mobile App**: Native iOS and Android applications
-- **Multi-User Support**: Family and team accounts
-- **API Integration**: Connect with health devices and apps
-- **Advanced Analytics**: Machine learning insights
-- **Plugin System**: Extensible functionality
-- **Offline Mode**: Full offline operation
-
-### Long-term Vision
-- **AI Evolution**: Continuous improvement of AI capabilities
-- **Community Features**: User communities and sharing
-- **Research Integration**: Academic and research partnerships
-- **Global Accessibility**: Multi-language support
-- **Enterprise Features**: Business and organizational tools
+- **Free Software Foundation** for the AGPL-3.0 license
+- **Open Source Community** for the amazing tools and libraries
+- **Contributors** who make this platform possible
 
 ---
 
-**AI Life Companion** - Your revolutionary, self-hosted AI companion for life. Experience the future of personal AI with complete privacy and zero cost.
+**Hope: The Steward – Omni Max** - Empowering individuals with privacy-first, autonomous AI assistance.
 
 

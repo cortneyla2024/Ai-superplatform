@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
-import { TrendingUp, Calendar, Clock } from 'lucide-react';
-import { format, subDays, subWeeks, subMonths, startOfDay, endOfDay } from 'date-fns';
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from "recharts";
+import { TrendingUp, Calendar, Clock } from "lucide-react";
+import { format, subDays, subWeeks, subMonths, startOfDay, endOfDay } from "date-fns";
 
 interface MoodEntry {
   id: string;
@@ -24,15 +24,15 @@ interface ChartData {
 }
 
 const timeRanges = [
-  { value: '7', label: 'Last 7 Days' },
-  { value: '30', label: 'Last 30 Days' },
-  { value: '90', label: 'Last 3 Months' },
+  { value: "7", label: "Last 7 Days" },
+  { value: "30", label: "Last 30 Days" },
+  { value: "90", label: "Last 3 Months" },
 ];
 
 export default function MoodHistoryChart() {
   const [moodEntries, setMoodEntries] = useState<MoodEntry[]>([]);
   const [chartData, setChartData] = useState<ChartData[]>([]);
-  const [timeRange, setTimeRange] = useState('7');
+  const [timeRange, setTimeRange] = useState("7");
   const [isLoading, setIsLoading] = useState(true);
   const [averageMood, setAverageMood] = useState(0);
 
@@ -44,15 +44,15 @@ export default function MoodHistoryChart() {
     processChartData();
   }, [moodEntries, timeRange]);
 
-  const fetchMoodEntries = async () => {
+  const fetchMoodEntries = async() => {
     try {
-      const response = await fetch('/api/mental-health/mood?limit=100');
+      const response = await fetch("/api/mental-health/mood?limit=100");
       if (response.ok) {
         const data = await response.json();
         setMoodEntries(data.moodEntries);
       }
     } catch (error) {
-      console.error('Error fetching mood entries:', error);
+      console.error("Error fetching mood entries:", error);
     } finally {
       setIsLoading(false);
     }
@@ -67,13 +67,13 @@ export default function MoodHistoryChart() {
 
     const days = parseInt(timeRange);
     const startDate = subDays(new Date(), days - 1);
-    
+
     // Create date range
     const dateRange: { [key: string]: { total: number; count: number } } = {};
-    
+
     for (let i = 0; i < days; i++) {
       const date = subDays(new Date(), days - 1 - i);
-      const dateKey = format(date, 'yyyy-MM-dd');
+      const dateKey = format(date, "yyyy-MM-dd");
       dateRange[dateKey] = { total: 0, count: 0 };
     }
 
@@ -81,7 +81,7 @@ export default function MoodHistoryChart() {
     moodEntries.forEach(entry => {
       const entryDate = new Date(entry.createdAt);
       if (entryDate >= startDate) {
-        const dateKey = format(entryDate, 'yyyy-MM-dd');
+        const dateKey = format(entryDate, "yyyy-MM-dd");
         if (dateRange[dateKey]) {
           dateRange[dateKey].total += entry.moodScore;
           dateRange[dateKey].count += 1;
@@ -91,7 +91,7 @@ export default function MoodHistoryChart() {
 
     // Convert to chart data
     const processedData: ChartData[] = Object.entries(dateRange).map(([date, data]) => ({
-      date: format(new Date(date), 'MMM dd'),
+      date: format(new Date(date), "MMM dd"),
       mood: data.count > 0 ? Math.round((data.total / data.count) * 10) / 10 : 0,
       count: data.count,
     }));
@@ -107,10 +107,16 @@ export default function MoodHistoryChart() {
   };
 
   const getMoodColor = (score: number) => {
-    if (score >= 8) return '#8b5cf6'; // Purple
-    if (score >= 6) return '#3b82f6'; // Blue
-    if (score >= 4) return '#f59e0b'; // Yellow
-    return '#ef4444'; // Red
+    if (score >= 8) {
+return "#8b5cf6";
+} // Purple
+    if (score >= 6) {
+return "#3b82f6";
+} // Blue
+    if (score >= 4) {
+return "#f59e0b";
+} // Yellow
+    return "#ef4444"; // Red
   };
 
   const CustomTooltip = ({ active, payload, label }: any) => {
@@ -186,13 +192,13 @@ export default function MoodHistoryChart() {
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis 
-                  dataKey="date" 
+                <XAxis
+                  dataKey="date"
                   tick={{ fontSize: 12 }}
                   tickLine={false}
                   axisLine={false}
                 />
-                <YAxis 
+                <YAxis
                   domain={[0, 10]}
                   tick={{ fontSize: 12 }}
                   tickLine={false}

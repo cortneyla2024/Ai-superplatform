@@ -1,0 +1,10 @@
+{
+  "projects":[
+    {"name":"Bloom UI Kit","type":"design"},
+    {"name":"Hope Storyboard","type":"narrative"}
+  ],
+  "assets":[
+    {"project":"Bloom UI Kit","kind":"palette","data":"bloom-soft"},
+    {"project":"Hope Storyboard","kind":"prompt","data":"gentle, humane, tactile"}
+  ]
+}

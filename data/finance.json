@@ -1,0 +1,15 @@
+{
+  "budgets":[
+    {"name":"Essentials","limit":1200,"period":"monthly"},
+    {"name":"Growth","limit":400,"period":"monthly"}
+  ],
+  "transactions":[
+    {"amount":-58.23,"category":"Groceries","note":"Market"},
+    {"amount":-22.00,"category":"Transit","note":"Bus pass"},
+    {"amount":1200.00,"category":"Income","note":"Freelance"}
+  ],
+  "goals":[
+    {"name":"Emergency Fund","target":2000,"priority":"high"},
+    {"name":"Course Budget","target":300,"priority":"medium"}
+  ]
+}

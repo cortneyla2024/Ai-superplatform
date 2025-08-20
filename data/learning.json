@@ -1,0 +1,14 @@
+{
+  "skills":[
+    {"name":"TypeScript","level":35},
+    {"name":"Design Systems","level":25}
+  ],
+  "habits":[
+    {"name":"Daily Walk","frequency":"daily"},
+    {"name":"Read 20 min","frequency":"daily"}
+  ],
+  "resources":[
+    {"title":"TS Handbook","url":"https://www.typescriptlang.org/docs/"},
+    {"title":"Accessible Design Checklist","url":"https://www.w3.org/WAI/standards-guidelines/"}
+  ]
+}

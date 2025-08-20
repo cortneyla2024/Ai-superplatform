@@ -1,24 +1,26 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/lib/auth';
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/database";
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
   try {
-    // Get authorization header
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    // Get user from session
+    const session = await auth();
+    if (!session?.user?.email) {
       return NextResponse.json(
-        { success: false, error: 'Authentication required' },
+        { success: false, error: "Authentication required" },
         { status: 401 }
       );
     }
 
-    const token = authHeader.substring(7);
-    const user = await AuthService.authenticate(token);
-    
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email },
+    });
+
     if (!user) {
       return NextResponse.json(
-        { success: false, error: 'Invalid token' },
-        { status: 401 }
+        { success: false, error: "User not found" },
+        { status: 404 }
       );
     }
 
@@ -26,17 +28,16 @@ export async function GET(req: NextRequest) {
       success: true,
       user: {
         id: user.id,
-        username: user.username,
-        email: user.email,
         name: user.name,
+        email: user.email,
         createdAt: user.createdAt,
       },
     });
 
   } catch (error) {
-    console.error('Token verification error:', error);
+    console.error("Token verification error:", error);
     return NextResponse.json(
-      { success: false, error: 'Token verification failed' },
+      { success: false, error: "Token verification failed" },
       { status: 500 }
     );
   }

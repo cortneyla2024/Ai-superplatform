@@ -1,4 +1,4 @@
-import { db } from '../db/file-db';
+import { db } from "../db/file-db";
 
 export interface AnalyticsEvent {
   id: string;
@@ -24,40 +24,40 @@ export class AnalyticsTracker {
         data,
       });
     } catch (error) {
-      console.error('Error logging analytics event:', error);
+      console.error("Error logging analytics event:", error);
     }
   }
 
   async logPageView(userId: string | undefined, page: string): Promise<void> {
-    await this.logEvent(userId, 'page_view', { page });
+    await this.logEvent(userId, "page_view", { page });
   }
 
   async logUserAction(userId: string | undefined, action: string, details: any = {}): Promise<void> {
-    await this.logEvent(userId, 'user_action', { action, ...details });
+    await this.logEvent(userId, "user_action", { action, ...details });
   }
 
   async logAIIntraction(userId: string | undefined, type: string, details: any = {}): Promise<void> {
-    await this.logEvent(userId, 'ai_interaction', { type, ...details });
+    await this.logEvent(userId, "ai_interaction", { type, ...details });
   }
 
   async logMusicGeneration(userId: string | undefined, prompt: string, success: boolean): Promise<void> {
-    await this.logEvent(userId, 'music_generation', { prompt, success });
+    await this.logEvent(userId, "music_generation", { prompt, success });
   }
 
   async logSearch(userId: string | undefined, query: string, resultCount: number): Promise<void> {
-    await this.logEvent(userId, 'search', { query, resultCount });
+    await this.logEvent(userId, "search", { query, resultCount });
   }
 
   async logError(userId: string | undefined, error: string, context: any = {}): Promise<void> {
-    await this.logEvent(userId, 'error', { error, context });
+    await this.logEvent(userId, "error", { error, context });
   }
 
   async getEventSummary(event: string, days: number = 7): Promise<EventSummary | null> {
     try {
       const events = await db.getAnalyticsEvents();
       const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-      
-      const filteredEvents = events.filter(event => 
+
+      const filteredEvents = events.filter(event =>
         event.event === event && new Date(event.timestamp) >= cutoffDate
       );
 
@@ -75,7 +75,7 @@ export class AnalyticsTracker {
         uniqueUsers,
       };
     } catch (error) {
-      console.error('Error getting event summary:', error);
+      console.error("Error getting event summary:", error);
       return null;
     }
   }
@@ -84,8 +84,8 @@ export class AnalyticsTracker {
     try {
       const events = await db.getAnalyticsEvents();
       const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-      
-      const filteredEvents = events.filter(event => 
+
+      const filteredEvents = events.filter(event =>
         new Date(event.timestamp) >= cutoffDate
       );
 
@@ -99,7 +99,7 @@ export class AnalyticsTracker {
         .sort((a, b) => b.count - a.count)
         .slice(0, limit);
     } catch (error) {
-      console.error('Error getting popular events:', error);
+      console.error("Error getting popular events:", error);
       return [];
     }
   }
@@ -108,10 +108,10 @@ export class AnalyticsTracker {
     try {
       const events = await db.getAnalyticsEvents(userId);
       const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-      
+
       return events.filter(event => new Date(event.timestamp) >= cutoffDate);
     } catch (error) {
-      console.error('Error getting user activity:', error);
+      console.error("Error getting user activity:", error);
       return [];
     }
   }
@@ -120,15 +120,15 @@ export class AnalyticsTracker {
     try {
       const events = await db.getAnalyticsEvents();
       const cutoffDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
-      
-      const filteredEvents = events.filter(event => 
+
+      const filteredEvents = events.filter(event =>
         new Date(event.timestamp) >= cutoffDate
       );
 
       const dailyStats: { [date: string]: { events: number; users: Set<string> } } = {};
 
       filteredEvents.forEach(event => {
-        const date = new Date(event.timestamp).toISOString().split('T')[0];
+        const date = new Date(event.timestamp).toISOString().split("T")[0];
         if (!dailyStats[date]) {
           dailyStats[date] = { events: 0, users: new Set() };
         }
@@ -146,7 +146,7 @@ export class AnalyticsTracker {
         }))
         .sort((a, b) => a.date.localeCompare(b.date));
     } catch (error) {
-      console.error('Error getting daily stats:', error);
+      console.error("Error getting daily stats:", error);
       return [];
     }
   }

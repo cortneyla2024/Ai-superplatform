@@ -1,1 +1,4 @@
-[]
+[
+  {"email":"demo@hope.local","password":"Passw0rd!","name":"Demo User","role":"Owner"},
+  {"email":"ally@hope.local","password":"Passw0rd!","name":"Ally Steward","role":"Admin"}
+]

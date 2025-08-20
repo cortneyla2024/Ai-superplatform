@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 
 interface ChatMessage {
   id: string;
@@ -11,14 +11,14 @@ interface ChatMessage {
 
 const AITeacher: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [token, setToken] = useState<string | null>(null);
-  const [knowledgeContext, setKnowledgeContext] = useState<string>('');
+  const [knowledgeContext, setKnowledgeContext] = useState<string>("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('auth-token');
+    const storedToken = localStorage.getItem("auth-token");
     setToken(storedToken);
   }, []);
 
@@ -27,11 +27,13 @@ const AITeacher: React.FC = () => {
   }, [messages]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const sendMessage = async () => {
-    if (!inputMessage.trim() || !token) return;
+  const sendMessage = async() => {
+    if (!inputMessage.trim() || !token) {
+return;
+}
 
     const userMessage: ChatMessage = {
       id: Date.now().toString(),
@@ -41,15 +43,15 @@ const AITeacher: React.FC = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
+    setInputMessage("");
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/ai/chat', {
-        method: 'POST',
+      const response = await fetch("/api/ai/chat", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           message: inputMessage,
@@ -68,13 +70,13 @@ const AITeacher: React.FC = () => {
         };
         setMessages(prev => [...prev, aiMessage]);
       } else {
-        throw new Error(data.error || 'Failed to get response');
+        throw new Error(data.error || "Failed to get response");
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
       const errorMessage: ChatMessage = {
         id: (Date.now() + 1).toString(),
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: "Sorry, I encountered an error. Please try again.",
         isAI: true,
         timestamp: new Date().toISOString(),
       };
@@ -85,7 +87,7 @@ const AITeacher: React.FC = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
@@ -126,20 +128,20 @@ const AITeacher: React.FC = () => {
             <div className="text-center text-gray-500 py-8">
               <div className="text-4xl mb-4">🎓</div>
               <p>Start a conversation with your AI teacher!</p>
-              <p className="text-sm mt-2">Ask questions about any topic you're studying.</p>
+              <p className="text-sm mt-2">Ask questions about any topic you&apos;re studying.</p>
             </div>
           ) : (
             <div className="space-y-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex ${message.isAI ? 'justify-start' : 'justify-end'}`}
+                  className={`flex ${message.isAI ? "justify-start" : "justify-end"}`}
                 >
                   <div
                     className={`max-w-xs lg:max-w-md px-4 py-3 rounded-lg ${
                       message.isAI
-                        ? 'bg-gray-700 text-white'
-                        : 'bg-green-600 text-white'
+                        ? "bg-gray-700 text-white"
+                        : "bg-green-600 text-white"
                     }`}
                   >
                     <div className="whitespace-pre-wrap">{message.content}</div>
@@ -205,10 +207,10 @@ const AITeacher: React.FC = () => {
           <h3 className="text-lg font-semibold mb-3 text-gray-300">Quick Questions</h3>
           <div className="flex flex-wrap gap-2">
             {[
-              'Explain quantum physics in simple terms',
-              'How do neural networks work?',
-              'What is the history of jazz music?',
-              'Help me understand calculus',
+              "Explain quantum physics in simple terms",
+              "How do neural networks work?",
+              "What is the history of jazz music?",
+              "Help me understand calculus",
             ].map((question) => (
               <button
                 key={question}

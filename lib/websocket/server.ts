@@ -1,8 +1,8 @@
-import { WebSocketServer, WebSocket } from 'ws';
-import { IncomingMessage } from 'http';
-import { AuthService } from '../auth';
-import { db } from '../db/file-db';
-import { OllamaClient } from '../ai/ollama-client';
+import { WebSocketServer, WebSocket } from "ws";
+import { IncomingMessage } from "http";
+import { AuthService } from "../auth";
+import { db } from "../db/file-db";
+import { OllamaClient } from "../ai/ollama-client";
 
 interface AuthenticatedWebSocket extends WebSocket {
   userId?: string;
@@ -10,7 +10,7 @@ interface AuthenticatedWebSocket extends WebSocket {
 }
 
 interface ChatMessage {
-  type: 'message';
+  type: "message";
   content: string;
   userId: string;
   username: string;
@@ -18,7 +18,7 @@ interface ChatMessage {
 }
 
 interface SystemMessage {
-  type: 'system';
+  type: "system";
   content: string;
   timestamp: string;
 }
@@ -37,7 +37,7 @@ class WebSocketManager {
   }
 
   private setupEventHandlers() {
-    this.wss.on('connection', (ws: AuthenticatedWebSocket, request: IncomingMessage) => {
+    this.wss.on("connection", (ws: AuthenticatedWebSocket, request: IncomingMessage) => {
       this.handleConnection(ws, request);
     });
   }
@@ -46,17 +46,17 @@ class WebSocketManager {
     try {
       // Extract token from query parameters
       const url = new URL(request.url!, `http://${request.headers.host}`);
-      const token = url.searchParams.get('token');
+      const token = url.searchParams.get("token");
 
       if (!token) {
-        ws.close(1008, 'Authentication required');
+        ws.close(1008, "Authentication required");
         return;
       }
 
       // Authenticate user
       const user = await AuthService.authenticate(token);
       if (!user) {
-        ws.close(1008, 'Invalid token');
+        ws.close(1008, "Invalid token");
         return;
       }
 
@@ -65,26 +65,26 @@ class WebSocketManager {
       ws.username = user.username;
 
       // Add to default room
-      this.joinRoom(ws, 'general');
+      this.joinRoom(ws, "general");
 
       // Send welcome message
       const welcomeMessage: SystemMessage = {
-        type: 'system',
+        type: "system",
         content: `Welcome ${user.username}! You've joined the chat.`,
         timestamp: new Date().toISOString(),
       };
       ws.send(JSON.stringify(welcomeMessage));
 
       // Handle incoming messages
-      ws.on('message', async (data: Buffer) => {
+      ws.on("message", async(data: Buffer) => {
         try {
           const message: WSMessage = JSON.parse(data.toString());
           await this.handleMessage(ws, message);
         } catch (error) {
-          console.error('Error handling message:', error);
+          console.error("Error handling message:", error);
           const errorMessage: SystemMessage = {
-            type: 'system',
-            content: 'Error processing message',
+            type: "system",
+            content: "Error processing message",
             timestamp: new Date().toISOString(),
           };
           ws.send(JSON.stringify(errorMessage));
@@ -92,18 +92,18 @@ class WebSocketManager {
       });
 
       // Handle disconnection
-      ws.on('close', () => {
+      ws.on("close", () => {
         this.leaveAllRooms(ws);
       });
 
     } catch (error) {
-      console.error('WebSocket connection error:', error);
-      ws.close(1011, 'Internal server error');
+      console.error("WebSocket connection error:", error);
+      ws.close(1011, "Internal server error");
     }
   }
 
   private async handleMessage(ws: AuthenticatedWebSocket, message: WSMessage) {
-    if (message.type === 'message') {
+    if (message.type === "message") {
       // Save user message to database
       await db.createChatMessage({
         userId: ws.userId!,
@@ -112,8 +112,8 @@ class WebSocketManager {
       });
 
       // Broadcast to room
-      this.broadcastToRoom('general', {
-        type: 'message',
+      this.broadcastToRoom("general", {
+        type: "message",
         content: message.content,
         userId: ws.userId!,
         username: ws.username!,
@@ -123,7 +123,7 @@ class WebSocketManager {
       // Generate AI response
       try {
         const aiResponse = await this.aiClient.chat(message.content);
-        
+
         // Save AI response to database
         await db.createChatMessage({
           userId: ws.userId!,
@@ -132,18 +132,18 @@ class WebSocketManager {
         });
 
         // Broadcast AI response
-        this.broadcastToRoom('general', {
-          type: 'message',
+        this.broadcastToRoom("general", {
+          type: "message",
           content: aiResponse,
-          userId: 'ai',
-          username: 'ASHBABY4LIFE AI',
+          userId: "ai",
+          username: "ASHBABY4LIFE AI",
           timestamp: new Date().toISOString(),
         });
       } catch (error) {
-        console.error('AI response error:', error);
+        console.error("AI response error:", error);
         const errorMessage: SystemMessage = {
-          type: 'system',
-          content: 'Sorry, I encountered an error processing your message.',
+          type: "system",
+          content: "Sorry, I encountered an error processing your message.",
           timestamp: new Date().toISOString(),
         };
         ws.send(JSON.stringify(errorMessage));
@@ -190,7 +190,7 @@ class WebSocketManager {
 
   public handleUpgrade(request: IncomingMessage, socket: any, head: Buffer) {
     this.wss.handleUpgrade(request, socket, head, (ws) => {
-      this.wss.emit('connection', ws, request);
+      this.wss.emit("connection", ws, request);
     });
   }
 }

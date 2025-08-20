@@ -1,0 +1,15 @@
+p, Owner, *, *, allow
+p, Admin, *, read, allow
+p, Admin, *, write, allow
+p, Admin, *, delete, allow
+p, Admin, system, admin, allow
+p, Member, *, read, allow
+p, Member, *, write, allow
+p, Member, system, admin, deny
+p, Viewer, *, read, allow
+p, Viewer, *, write, deny
+p, Viewer, *, delete, deny
+p, Viewer, system, admin, deny
+
+g, demo@hope.local, Owner
+g, ally@hope.local, Admin

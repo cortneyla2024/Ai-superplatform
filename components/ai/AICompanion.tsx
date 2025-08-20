@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import React, { useState, useEffect, useRef } from "react";
+import * as THREE from "three";
 
 interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: Date;
 }
 
 const AICompanion: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState('');
+  const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -23,11 +23,11 @@ const AICompanion: React.FC = () => {
 
   useEffect(() => {
     // Check authentication
-    const token = localStorage.getItem('auth-token');
+    const token = localStorage.getItem("auth-token");
     if (token) {
-      fetch('/api/auth/verify', {
+      fetch("/api/auth/verify", {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          "Authorization": `Bearer ${token}`,
         },
       })
         .then(res => res.json())
@@ -38,7 +38,7 @@ const AICompanion: React.FC = () => {
           }
         })
         .catch(() => {
-          localStorage.removeItem('auth-token');
+          localStorage.removeItem("auth-token");
         });
     }
 
@@ -51,7 +51,9 @@ const AICompanion: React.FC = () => {
   }, [messages]);
 
   const init3DScene = () => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current) {
+return;
+}
 
     // Scene setup
     const scene = new THREE.Scene();
@@ -68,9 +70,9 @@ const AICompanion: React.FC = () => {
     camera.position.z = 5;
 
     // Renderer setup
-    const renderer = new THREE.WebGLRenderer({ 
+    const renderer = new THREE.WebGLRenderer({
       canvas: canvasRef.current,
-      antialias: true 
+      antialias: true,
     });
     renderer.setSize(canvasRef.current.clientWidth, canvasRef.current.clientHeight);
     rendererRef.current = renderer;
@@ -86,10 +88,10 @@ const AICompanion: React.FC = () => {
 
     // Create a simple avatar placeholder (sphere)
     const geometry = new THREE.SphereGeometry(1, 32, 32);
-    const material = new THREE.MeshPhongMaterial({ 
+    const material = new THREE.MeshPhongMaterial({
       color: 0x6366f1,
       transparent: true,
-      opacity: 0.8
+      opacity: 0.8,
     });
     const avatar = new THREE.Mesh(geometry, material);
     scene.add(avatar);
@@ -97,54 +99,58 @@ const AICompanion: React.FC = () => {
     // Animation loop
     const animate = () => {
       requestAnimationFrame(animate);
-      
+
       // Rotate avatar
       avatar.rotation.y += 0.01;
-      
+
       renderer.render(scene, camera);
     };
     animate();
 
     // Handle window resize
     const handleResize = () => {
-      if (!canvasRef.current || !camera || !renderer) return;
-      
+      if (!canvasRef.current || !camera || !renderer) {
+return;
+}
+
       const width = canvasRef.current.clientWidth;
       const height = canvasRef.current.clientHeight;
-      
+
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
       renderer.setSize(width, height);
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
   };
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const sendMessage = async () => {
-    if (!inputMessage.trim() || !isAuthenticated) return;
+  const sendMessage = async() => {
+    if (!inputMessage.trim() || !isAuthenticated) {
+return;
+}
 
     const userMessage: Message = {
       id: Date.now().toString(),
-      role: 'user',
+      role: "user",
       content: inputMessage,
       timestamp: new Date(),
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
+    setInputMessage("");
     setIsLoading(true);
 
     try {
-      const token = localStorage.getItem('auth-token');
-      const response = await fetch('/api/ai', {
-        method: 'POST',
+      const token = localStorage.getItem("auth-token");
+      const response = await fetch("/api/ai", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           prompt: inputMessage,
@@ -152,7 +158,7 @@ const AICompanion: React.FC = () => {
             role: msg.role,
             content: msg.content,
           })),
-          context: 'AI Life Companion conversation',
+          context: "AI Life Companion conversation",
         }),
       });
 
@@ -161,7 +167,7 @@ const AICompanion: React.FC = () => {
       if (data.success) {
         const aiMessage: Message = {
           id: (Date.now() + 1).toString(),
-          role: 'assistant',
+          role: "assistant",
           content: data.response,
           timestamp: new Date(),
         };
@@ -169,18 +175,18 @@ const AICompanion: React.FC = () => {
       } else {
         const errorMessage: Message = {
           id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: 'I apologize, but I encountered an error. Please try again.',
+          role: "assistant",
+          content: "I apologize, but I encountered an error. Please try again.",
           timestamp: new Date(),
         };
         setMessages(prev => [...prev, errorMessage]);
       }
     } catch (error) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: 'I apologize, but I encountered an error. Please try again.',
+        role: "assistant",
+        content: "I apologize, but I encountered an error. Please try again.",
         timestamp: new Date(),
       };
       setMessages(prev => [...prev, errorMessage]);
@@ -190,7 +196,7 @@ const AICompanion: React.FC = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
@@ -232,12 +238,12 @@ const AICompanion: React.FC = () => {
                 <canvas
                   ref={canvasRef}
                   className="w-full h-full rounded-lg"
-                  style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)' }}
+                  style={{ background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)" }}
                 />
               </div>
               <div className="mt-4 text-center">
                 <div className="text-sm text-gray-400">
-                  {isLoading ? 'Thinking...' : 'Ready to chat'}
+                  {isLoading ? "Thinking..." : "Ready to chat"}
                 </div>
               </div>
             </div>
@@ -247,7 +253,7 @@ const AICompanion: React.FC = () => {
           <div className="lg:col-span-2">
             <div className="bg-gray-900 rounded-xl p-6 h-96 flex flex-col">
               <h3 className="text-lg font-semibold mb-4">Conversation</h3>
-              
+
               {/* Messages */}
               <div className="flex-1 overflow-y-auto mb-4 space-y-4">
                 {messages.length === 0 ? (
@@ -260,13 +266,13 @@ const AICompanion: React.FC = () => {
                   messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                      className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                     >
                       <div
                         className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                          message.role === 'user'
-                            ? 'bg-purple-600 text-white'
-                            : 'bg-gray-700 text-gray-100'
+                          message.role === "user"
+                            ? "bg-purple-600 text-white"
+                            : "bg-gray-700 text-gray-100"
                         }`}
                       >
                         <p className="text-sm">{message.content}</p>
@@ -282,8 +288,8 @@ const AICompanion: React.FC = () => {
                     <div className="bg-gray-700 text-gray-100 max-w-xs lg:max-w-md px-4 py-2 rounded-lg">
                       <div className="flex space-x-1">
                         <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.1s" }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
                       </div>
                     </div>
                   </div>

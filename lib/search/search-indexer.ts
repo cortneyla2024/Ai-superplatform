@@ -26,28 +26,28 @@ export class SearchIndexer {
   private index: SearchIndex = {};
   private documentStats: DocumentStats = {};
   private stopWords: Set<string> = new Set([
-    'a', 'an', 'and', 'are', 'as', 'at', 'be', 'by', 'for', 'from',
-    'has', 'he', 'in', 'is', 'it', 'its', 'of', 'on', 'that', 'the',
-    'to', 'was', 'will', 'with', 'the', 'this', 'but', 'they', 'have',
-    'had', 'what', 'said', 'each', 'which', 'she', 'do', 'how', 'their',
-    'if', 'up', 'out', 'many', 'then', 'them', 'these', 'so', 'some',
-    'her', 'would', 'make', 'like', 'into', 'him', 'time', 'two',
-    'more', 'go', 'no', 'way', 'could', 'my', 'than', 'first', 'been',
-    'call', 'who', 'its', 'now', 'find', 'long', 'down', 'day', 'did',
-    'get', 'come', 'made', 'may', 'part'
+    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from",
+    "has", "he", "in", "is", "it", "its", "of", "on", "that", "the",
+    "to", "was", "will", "with", "the", "this", "but", "they", "have",
+    "had", "what", "said", "each", "which", "she", "do", "how", "their",
+    "if", "up", "out", "many", "then", "them", "these", "so", "some",
+    "her", "would", "make", "like", "into", "him", "time", "two",
+    "more", "go", "no", "way", "could", "my", "than", "first", "been",
+    "call", "who", "its", "now", "find", "long", "down", "day", "did",
+    "get", "come", "made", "may", "part",
   ]);
 
   private tokenize(text: string): string[] {
     return text
       .toLowerCase()
-      .replace(/[^\w\s]/g, ' ')
+      .replace(/[^\w\s]/g, " ")
       .split(/\s+/)
       .filter(word => word.length > 0 && !this.stopWords.has(word));
   }
 
   private stem(word: string): string {
     // Simple stemming - remove common suffixes
-    const suffixes = ['ing', 'ed', 'er', 'est', 'ly', 's', 'es'];
+    const suffixes = ["ing", "ed", "er", "est", "ly", "s", "es"];
     for (const suffix of suffixes) {
       if (word.endsWith(suffix) && word.length > suffix.length + 2) {
         return word.slice(0, -suffix.length);
@@ -64,7 +64,7 @@ export class SearchIndexer {
     const terms = [
       ...this.extractTerms(document.title),
       ...this.extractTerms(document.content),
-      ...(document.tags || []).map(tag => this.extractTerms(tag)).flat()
+      ...(document.tags || []).map(tag => this.extractTerms(tag)).flat(),
     ];
 
     const termPositions: { [term: string]: number[] } = {};
@@ -89,14 +89,14 @@ export class SearchIndexer {
       this.index[term].push({
         documentId: document.id,
         frequency,
-        positions: termPositions[term]
+        positions: termPositions[term],
       });
     });
 
     // Update document stats
     this.documentStats[document.id] = {
       totalTerms: terms.length,
-      uniqueTerms: Object.keys(termFrequency).length
+      uniqueTerms: Object.keys(termFrequency).length,
     };
   }
 
@@ -148,7 +148,7 @@ export class SearchIndexer {
   getIndexStats(): { totalTerms: number; totalDocuments: number } {
     return {
       totalTerms: Object.keys(this.index).length,
-      totalDocuments: Object.keys(this.documentStats).length
+      totalDocuments: Object.keys(this.documentStats).length,
     };
   }
 

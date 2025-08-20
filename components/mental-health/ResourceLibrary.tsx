@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BookOpen, Search, Filter, Heart, HeartOff, Sparkles, Brain, Activity, Sun, Moon } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { BookOpen, Search, Filter, Heart, HeartOff, Sparkles, Brain, Activity, Sun, Moon } from "lucide-react";
+import { toast } from "sonner";
 
 interface CopingStrategy {
   id: string;
@@ -20,40 +20,40 @@ interface CopingStrategy {
 }
 
 const categories = [
-  { value: '', label: 'All Categories' },
-  { value: 'Anxiety', label: 'Anxiety' },
-  { value: 'Stress', label: 'Stress' },
-  { value: 'Depression', label: 'Depression' },
-  { value: 'Mindfulness', label: 'Mindfulness' },
-  { value: 'Sleep', label: 'Sleep' },
-  { value: 'Self-Care', label: 'Self-Care' },
+  { value: "", label: "All Categories" },
+  { value: "Anxiety", label: "Anxiety" },
+  { value: "Stress", label: "Stress" },
+  { value: "Depression", label: "Depression" },
+  { value: "Mindfulness", label: "Mindfulness" },
+  { value: "Sleep", label: "Sleep" },
+  { value: "Self-Care", label: "Self-Care" },
 ];
 
 const types = [
-  { value: '', label: 'All Types' },
-  { value: 'Breathing Exercise', label: 'Breathing Exercise' },
-  { value: 'Mindfulness', label: 'Mindfulness' },
-  { value: 'Grounding Technique', label: 'Grounding Technique' },
-  { value: 'Physical Activity', label: 'Physical Activity' },
-  { value: 'Creative Expression', label: 'Creative Expression' },
-  { value: 'Social Connection', label: 'Social Connection' },
+  { value: "", label: "All Types" },
+  { value: "Breathing Exercise", label: "Breathing Exercise" },
+  { value: "Mindfulness", label: "Mindfulness" },
+  { value: "Grounding Technique", label: "Grounding Technique" },
+  { value: "Physical Activity", label: "Physical Activity" },
+  { value: "Creative Expression", label: "Creative Expression" },
+  { value: "Social Connection", label: "Social Connection" },
 ];
 
 const categoryIcons: { [key: string]: any } = {
-  'Anxiety': Brain,
-  'Stress': Activity,
-  'Depression': Moon,
-  'Mindfulness': Sparkles,
-  'Sleep': Moon,
-  'Self-Care': Heart,
+  "Anxiety": Brain,
+  "Stress": Activity,
+  "Depression": Moon,
+  "Mindfulness": Sparkles,
+  "Sleep": Moon,
+  "Self-Care": Heart,
 };
 
 export default function ResourceLibrary() {
   const [strategies, setStrategies] = useState<CopingStrategy[]>([]);
   const [filteredStrategies, setFilteredStrategies] = useState<CopingStrategy[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedType, setSelectedType] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedType, setSelectedType] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -64,12 +64,18 @@ export default function ResourceLibrary() {
     filterStrategies();
   }, [strategies, searchTerm, selectedCategory, selectedType]);
 
-  const fetchStrategies = async () => {
+  const fetchStrategies = async() => {
     try {
       const params = new URLSearchParams();
-      if (selectedCategory) params.append('category', selectedCategory);
-      if (selectedType) params.append('type', selectedType);
-      if (searchTerm) params.append('search', searchTerm);
+      if (selectedCategory) {
+params.append("category", selectedCategory);
+}
+      if (selectedType) {
+params.append("type", selectedType);
+}
+      if (searchTerm) {
+params.append("search", searchTerm);
+}
 
       const response = await fetch(`/api/mental-health/strategies?${params}`);
       if (response.ok) {
@@ -77,8 +83,8 @@ export default function ResourceLibrary() {
         setStrategies(data.strategies);
       }
     } catch (error) {
-      console.error('Error fetching strategies:', error);
-      toast.error('Failed to load resources');
+      console.error("Error fetching strategies:", error);
+      toast.error("Failed to load resources");
     } finally {
       setIsLoading(false);
     }
@@ -105,12 +111,12 @@ export default function ResourceLibrary() {
     setFilteredStrategies(filtered);
   };
 
-  const handleSaveStrategy = async (strategyId: string) => {
+  const handleSaveStrategy = async(strategyId: string) => {
     try {
-      const response = await fetch('/api/mental-health/strategies/save', {
-        method: 'POST',
+      const response = await fetch("/api/mental-health/strategies/save", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ strategyId }),
       });
@@ -123,19 +129,19 @@ export default function ResourceLibrary() {
               : strategy
           )
         );
-        toast.success('Strategy saved to your collection');
+        toast.success("Strategy saved to your collection");
       } else {
-        toast.error('Failed to save strategy');
+        toast.error("Failed to save strategy");
       }
     } catch (error) {
-      toast.error('Failed to save strategy');
+      toast.error("Failed to save strategy");
     }
   };
 
-  const handleRemoveStrategy = async (strategyId: string) => {
+  const handleRemoveStrategy = async(strategyId: string) => {
     try {
       const response = await fetch(`/api/mental-health/strategies/save?strategyId=${strategyId}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (response.ok) {
@@ -146,25 +152,25 @@ export default function ResourceLibrary() {
               : strategy
           )
         );
-        toast.success('Strategy removed from your collection');
+        toast.success("Strategy removed from your collection");
       } else {
-        toast.error('Failed to remove strategy');
+        toast.error("Failed to remove strategy");
       }
     } catch (error) {
-      toast.error('Failed to remove strategy');
+      toast.error("Failed to remove strategy");
     }
   };
 
   const getCategoryColor = (category: string) => {
     const colors: { [key: string]: string } = {
-      'Anxiety': 'bg-blue-100 text-blue-800',
-      'Stress': 'bg-orange-100 text-orange-800',
-      'Depression': 'bg-purple-100 text-purple-800',
-      'Mindfulness': 'bg-green-100 text-green-800',
-      'Sleep': 'bg-indigo-100 text-indigo-800',
-      'Self-Care': 'bg-pink-100 text-pink-800',
+      "Anxiety": "bg-blue-100 text-blue-800",
+      "Stress": "bg-orange-100 text-orange-800",
+      "Depression": "bg-purple-100 text-purple-800",
+      "Mindfulness": "bg-green-100 text-green-800",
+      "Sleep": "bg-indigo-100 text-indigo-800",
+      "Self-Care": "bg-pink-100 text-pink-800",
     };
-    return colors[category] || 'bg-gray-100 text-gray-800';
+    return colors[category] || "bg-gray-100 text-gray-800";
   };
 
   if (isLoading) {
@@ -252,7 +258,7 @@ export default function ResourceLibrary() {
         <div className="space-y-4">
           <div className="flex items-center justify-between">
             <p className="text-sm text-muted-foreground">
-              {filteredStrategies.length} resource{filteredStrategies.length !== 1 ? 's' : ''} found
+              {filteredStrategies.length} resource{filteredStrategies.length !== 1 ? "s" : ""} found
             </p>
           </div>
 

@@ -1,15 +1,15 @@
-import { readData } from './database';
+import { readData } from "./database";
 
 export async function buildSearchIndex() {
   const invertedIndex = new Map();
-  const allPosts = await readData('posts.json');
-  const stopWords = new Set(['a', 'an', 'the', 'is', 'in', 'it', 'to', 'and', 'or', 'for', 'of']);
+  const allPosts = await readData("posts.json");
+  const stopWords = new Set(["a", "an", "the", "is", "in", "it", "to", "and", "or", "for", "of"]);
 
   for (const post of allPosts) {
     const text = `${post.title} ${post.content}`;
     const tokens = text.toLowerCase().split(/\s+/);
     const termFrequencies = new Map();
-    
+
     for (const token of tokens) {
       if (!stopWords.has(token) && token.length > 2) {
         const stemmed = token;
@@ -31,7 +31,7 @@ export async function searchQuery(query: string) {
   const invertedIndex = await buildSearchIndex();
   const tokens = query.toLowerCase().split(/\s+/);
   const results = new Map();
-  const posts = await readData('posts.json');
+  const posts = await readData("posts.json");
   const totalDocuments = posts.length;
 
   for (const token of tokens) {

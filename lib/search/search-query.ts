@@ -1,9 +1,9 @@
-import { SearchIndexer } from './search-indexer';
-import { db, Post, KnowledgeEntry } from '../db/file-db';
+import { SearchIndexer } from "./search-indexer";
+import { db, Post, KnowledgeEntry } from "../db/file-db";
 
 interface SearchResult {
   id: string;
-  type: 'post' | 'knowledge';
+  type: "post" | "knowledge";
   title: string;
   content: string;
   tags: string[];
@@ -19,7 +19,7 @@ export class SearchQuery {
   }
 
   async buildIndex(): Promise<void> {
-    console.log('Building search index...');
+    console.log("Building search index...");
 
     // Index posts
     const posts = await db.getPosts();
@@ -28,7 +28,7 @@ export class SearchQuery {
         id: post.id,
         title: post.title,
         content: post.content,
-        tags: post.tags
+        tags: post.tags,
       });
     });
 
@@ -39,7 +39,7 @@ export class SearchQuery {
         id: entry.id,
         title: entry.title,
         content: entry.content,
-        tags: entry.tags
+        tags: entry.tags,
       });
     });
 
@@ -61,12 +61,12 @@ export class SearchQuery {
       if (post) {
         results.push({
           id: post.id,
-          type: 'post',
+          type: "post",
           title: post.title,
           content: post.content,
           tags: post.tags,
           score: result.score,
-          createdAt: post.createdAt
+          createdAt: post.createdAt,
         });
         continue;
       }
@@ -77,12 +77,12 @@ export class SearchQuery {
       if (knowledgeEntry) {
         results.push({
           id: knowledgeEntry.id,
-          type: 'knowledge',
+          type: "knowledge",
           title: knowledgeEntry.title,
           content: knowledgeEntry.content,
           tags: knowledgeEntry.tags,
           score: result.score,
-          createdAt: knowledgeEntry.createdAt
+          createdAt: knowledgeEntry.createdAt,
         });
       }
     }
@@ -90,12 +90,12 @@ export class SearchQuery {
     return results.sort((a, b) => b.score - a.score);
   }
 
-  async addDocument(type: 'post' | 'knowledge', document: Post | KnowledgeEntry): Promise<void> {
+  async addDocument(type: "post" | "knowledge", document: Post | KnowledgeEntry): Promise<void> {
     this.indexer.addDocument({
       id: document.id,
       title: document.title,
       content: document.content,
-      tags: document.tags
+      tags: document.tags,
     });
   }
 
@@ -103,12 +103,12 @@ export class SearchQuery {
     this.indexer.removeDocument(documentId);
   }
 
-  async updateDocument(type: 'post' | 'knowledge', document: Post | KnowledgeEntry): Promise<void> {
+  async updateDocument(type: "post" | "knowledge", document: Post | KnowledgeEntry): Promise<void> {
     this.indexer.updateDocument({
       id: document.id,
       title: document.title,
       content: document.content,
-      tags: document.tags
+      tags: document.tags,
     });
   }
 

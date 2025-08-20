@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { AuthService } from '@/lib/auth';
-import { z } from 'zod';
+import { NextRequest, NextResponse } from "next/server";
+import { AuthService } from "@/lib/auth";
+import { z } from "zod";
 
 const SignupSchema = z.object({
   username: z.string().min(3).max(50),
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
       success: true,
       user: {
         id: user.id,
-        username: user.username,
+        name: user.name,
         email: user.email,
       },
       token,
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, error: 'Invalid input data' },
+        { success: false, error: "Invalid input data" },
         { status: 400 }
       );
     }
@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: false, error: 'Registration failed' },
+      { success: false, error: "Registration failed" },
       { status: 500 }
     );
   }

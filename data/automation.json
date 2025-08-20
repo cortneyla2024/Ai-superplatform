@@ -1,0 +1,6 @@
+{
+  "routines":[
+    {"name":"Low Mood Support","triggers":["MOOD_BELOW_THRESHOLD"],"actions":["SUGGEST_COPING_STRATEGY","CREATE_JOURNAL_PROMPT"]},
+    {"name":"Over Budget Alert","triggers":["BUDGET_EXCEEDED"],"actions":["SEND_NOTIFICATION","GENERATE_AI_INSIGHT"]}
+  ]
+}

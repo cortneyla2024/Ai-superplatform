@@ -1,0 +1,124 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    ":semanticCommits",
+    ":semanticCommitTypeAll(chore)",
+    ":semanticCommitScope(deps)"
+  ],
+  "schedule": ["before 4am on monday"],
+  "timezone": "UTC",
+  "packageRules": [
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    },
+    {
+      "matchUpdateTypes": ["major"],
+      "automerge": false,
+      "labels": ["dependencies", "breaking"]
+    },
+    {
+      "matchPackageNames": ["@prisma/client"],
+      "automerge": false,
+      "labels": ["dependencies", "database"]
+    },
+    {
+      "matchPackageNames": ["next", "react", "react-dom"],
+      "automerge": false,
+      "labels": ["dependencies", "frontend"]
+    },
+    {
+      "matchPackageNames": ["@nestjs/core", "@nestjs/common"],
+      "automerge": false,
+      "labels": ["dependencies", "backend"]
+    },
+    {
+      "matchPackageNames": ["typescript"],
+      "automerge": false,
+      "labels": ["dependencies", "typescript"]
+    },
+    {
+      "matchPackageNames": ["eslint", "prettier"],
+      "automerge": false,
+      "labels": ["dependencies", "tooling"]
+    },
+    {
+      "matchPackageNames": ["jest", "playwright"],
+      "automerge": false,
+      "labels": ["dependencies", "testing"]
+    },
+    {
+      "matchPackageNames": ["@types/*"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
+    }
+  ],
+  "assignees": ["@steward-omni-max/core-team"],
+  "reviewers": ["@steward-omni-max/core-team"],
+  "labels": ["dependencies", "renovate"],
+  "commitMessagePrefix": "chore(deps):",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "to {{newVersion}}",
+  "prTitle": "chore(deps): update {{depName}} to {{newVersion}}",
+  "prBodyTemplate": "## 🤖 Automated Dependency Update\n\nThis PR was automatically created by Renovate.\n\n### Changes\n\n- **Package**: {{depName}}\n- **From**: {{currentVersion}}\n- **To**: {{newVersion}}\n- **Type**: {{updateType}}\n\n### Release Notes\n\n{{#if hasReleaseNotes}}\n{{#each releases as |release|}}\n#### {{release.version}}\n{{#if release.releaseNotes}}\n{{release.releaseNotes}}\n{{else}}\nNo release notes available.\n{{/if}}\n{{/each}}\n{{else}}\nNo release notes available.\n{{/if}}\n\n### Checklist\n\n- [ ] Tests pass\n- [ ] Build successful\n- [ ] No breaking changes\n- [ ] Security review completed\n\n---\n\n*This PR was created automatically by Renovate.*",
+  "ignorePaths": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/vendor/**",
+    "**/examples/**",
+    "**/docs/**",
+    "**/test/**",
+    "**/tests/**",
+    "**/*.test.js",
+    "**/*.spec.js"
+  ],
+  "enabledManagers": [
+    "npm",
+    "yarn",
+    "pnpm",
+    "dockerfile",
+    "docker-compose",
+    "github-actions"
+  ],
+  "docker": {
+    "enabled": true,
+    "pinDigests": true
+  },
+  "github-actions": {
+    "enabled": true
+  },
+  "docker-compose": {
+    "enabled": true
+  },
+  "postUpdateOptions": [
+    "pnpmDedupe",
+    "pnpmInstall"
+  ],
+  "rangeStrategy": "bump",
+  "bumpVersion": "patch",
+  "recreateClosed": true,
+  "rebaseWhen": "behind-base-branch",
+  "rebaseLabel": "rebase",
+  "assignAutomerge": true,
+  "automergeSchedule": ["before 4am on monday"],
+  "prHourlyLimit": 2,
+  "prConcurrentLimit": 10,
+  "branchConcurrentLimit": 5,
+  "hostRules": [
+    {
+      "hostType": "github",
+      "token": "{{ secrets.GITHUB_TOKEN }}"
+    }
+  ],
+  "onboarding": false,
+  "requireConfig": false,
+  "configMigration": true,
+  "pruneStaleBranches": true,
+  "repositories": ["local"]
+}

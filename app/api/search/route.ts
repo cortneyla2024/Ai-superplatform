@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { SearchQuery } from '@/lib/search/search-query';
-import { AuthService } from '@/lib/auth';
-import { z } from 'zod';
+import { NextRequest, NextResponse } from "next/server";
+import { SearchQuery } from "@/lib/search/search-query";
+import { AuthService } from "@/lib/auth";
+import { z } from "zod";
 
 const SearchSchema = z.object({
   query: z.string().min(1).max(200),
@@ -11,10 +11,10 @@ const SearchSchema = z.object({
 export async function GET(request: NextRequest) {
   try {
     // Get authorization header
-    const authHeader = request.headers.get('authorization');
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    const authHeader = request.headers.get("authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
       return NextResponse.json(
-        { success: false, error: 'Authentication required' },
+        { success: false, error: "Authentication required" },
         { status: 401 }
       );
     }
@@ -23,18 +23,18 @@ export async function GET(request: NextRequest) {
     const user = await AuthService.authenticate(token);
     if (!user) {
       return NextResponse.json(
-        { success: false, error: 'Invalid token' },
+        { success: false, error: "Invalid token" },
         { status: 401 }
       );
     }
 
     const { searchParams } = new URL(request.url);
-    const query = searchParams.get('q');
-    const limit = parseInt(searchParams.get('limit') || '10');
+    const query = searchParams.get("q");
+    const limit = parseInt(searchParams.get("limit") || "10");
 
     if (!query) {
       return NextResponse.json(
-        { success: false, error: 'Query parameter is required' },
+        { success: false, error: "Query parameter is required" },
         { status: 400 }
       );
     }
@@ -55,14 +55,14 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { success: false, error: 'Invalid search parameters' },
+        { success: false, error: "Invalid search parameters" },
         { status: 400 }
       );
     }
 
-    console.error('Search error:', error);
+    console.error("Search error:", error);
     return NextResponse.json(
-      { success: false, error: 'Search failed' },
+      { success: false, error: "Search failed" },
       { status: 500 }
     );
   }

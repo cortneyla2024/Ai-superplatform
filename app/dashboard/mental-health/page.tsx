@@ -1,71 +1,71 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Heart, TrendingUp, BookOpen, ClipboardList, Brain, Activity, Moon, Sparkles } from 'lucide-react';
-import DailyMoodTracker from '@/components/mental-health/DailyMoodTracker';
-import MoodHistoryChart from '@/components/mental-health/MoodHistoryChart';
-import ResourceLibrary from '@/components/mental-health/ResourceLibrary';
-import AssessmentWizard from '@/components/mental-health/AssessmentWizard';
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Heart, TrendingUp, BookOpen, ClipboardList, Brain, Activity, Moon, Sparkles } from "lucide-react";
+import DailyMoodTracker from "@/components/mental-health/DailyMoodTracker";
+import MoodHistoryChart from "@/components/mental-health/MoodHistoryChart";
+import ResourceLibrary from "@/components/mental-health/ResourceLibrary";
+import AssessmentWizard from "@/components/mental-health/AssessmentWizard";
 
 export default function MentalHealthDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState("overview");
 
   const stats = [
     {
-      title: 'Current Streak',
-      value: '7 days',
+      title: "Current Streak",
+      value: "7 days",
       icon: Heart,
-      color: 'text-pink-500',
-      description: 'Mood tracking streak',
+      color: "text-pink-500",
+      description: "Mood tracking streak",
     },
     {
-      title: 'Average Mood',
-      value: '7.2/10',
+      title: "Average Mood",
+      value: "7.2/10",
       icon: TrendingUp,
-      color: 'text-blue-500',
-      description: 'Last 30 days',
+      color: "text-blue-500",
+      description: "Last 30 days",
     },
     {
-      title: 'Resources Saved',
-      value: '12',
+      title: "Resources Saved",
+      value: "12",
       icon: BookOpen,
-      color: 'text-green-500',
-      description: 'Coping strategies',
+      color: "text-green-500",
+      description: "Coping strategies",
     },
     {
-      title: 'Assessments',
-      value: '3',
+      title: "Assessments",
+      value: "3",
       icon: ClipboardList,
-      color: 'text-purple-500',
-      description: 'Completed this month',
+      color: "text-purple-500",
+      description: "Completed this month",
     },
   ];
 
   const quickActions = [
     {
-      title: 'Track Today\'s Mood',
-      description: 'Record how you\'re feeling',
+      title: "Track Today's Mood",
+      description: "Record how you're feeling",
       icon: Heart,
-      action: () => setActiveTab('mood'),
-      color: 'bg-pink-50 border-pink-200 hover:bg-pink-100',
+      action: () => setActiveTab("mood"),
+      color: "bg-pink-50 border-pink-200 hover:bg-pink-100",
     },
     {
-      title: 'Take Assessment',
-      description: 'PHQ-9 or GAD-7 screening',
+      title: "Take Assessment",
+      description: "PHQ-9 or GAD-7 screening",
       icon: ClipboardList,
-      action: () => setActiveTab('assessment'),
-      color: 'bg-purple-50 border-purple-200 hover:bg-purple-100',
+      action: () => setActiveTab("assessment"),
+      color: "bg-purple-50 border-purple-200 hover:bg-purple-100",
     },
     {
-      title: 'Browse Resources',
-      description: 'Find coping strategies',
+      title: "Browse Resources",
+      description: "Find coping strategies",
       icon: BookOpen,
-      action: () => setActiveTab('resources'),
-      color: 'bg-green-50 border-green-200 hover:bg-green-100',
+      action: () => setActiveTab("resources"),
+      color: "bg-green-50 border-green-200 hover:bg-green-100",
     },
   ];
 
@@ -159,19 +159,19 @@ export default function MentalHealthDashboard() {
             <DailyMoodTracker />
             <MoodHistoryChart />
           </div>
-          
+
           {/* Mental Health Tips */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Brain className="h-5 w-5" />
-                Today's Wellness Tip
+                Today&apos;s Wellness Tip
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg">
                 <p className="text-sm text-muted-foreground">
-                  <strong>Practice Gratitude:</strong> Take a moment each day to reflect on three things you're grateful for. 
+                  <strong>Practice Gratitude:</strong>                   Take a moment each day to reflect on three things you&apos;re grateful for.
                   This simple practice can help shift your perspective and improve your overall mood and mental well-being.
                 </p>
               </div>
@@ -203,9 +203,9 @@ export default function MentalHealthDashboard() {
             <div className="text-sm text-blue-800">
               <p className="font-medium mb-1">Your Mental Health Matters</p>
               <p>
-                This platform is designed to support your mental wellness journey. Remember that these tools are for 
-                self-reflection and support, not a replacement for professional mental health care. If you're experiencing 
-                severe symptoms or thoughts of self-harm, please reach out to a mental health professional or call a 
+                This platform is designed to support your mental wellness journey. Remember that these tools are for
+                self-reflection and support, not a replacement for professional mental health care. If you&apos;re experiencing
+                severe symptoms or thoughts of self-harm, please reach out to a mental health professional or call a
                 crisis hotline immediately.
               </p>
             </div>
