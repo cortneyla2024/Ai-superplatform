@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "pnpm run build",
+  "rootDirectory": ".",
+  "buildCommand": "turbo run build --filter=@vitality/web",
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
   "framework": "nextjs",
