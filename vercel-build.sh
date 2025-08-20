@@ -13,12 +13,12 @@ fi
 
 # Install dependencies
 echo "📦 Installing dependencies..."
-pnpm install --frozen-lockfile
+pnpm install --no-frozen-lockfile
 
 # Generate Prisma client
 echo "🗄️ Generating Prisma client..."
 cd apps/web
-pnpm prisma generate
+npx prisma generate --schema=../../prisma/schema.prisma
 cd ../..
 
 # Build the application

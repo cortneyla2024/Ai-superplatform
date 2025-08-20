@@ -7,10 +7,89 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@vitality/ai-service':
+        specifier: workspace:*
+        version: link:packages/ai-service
+      '@vitality/analytics':
+        specifier: workspace:*
+        version: link:packages/analytics
+      '@vitality/auth':
+        specifier: workspace:*
+        version: link:packages/auth
+      '@vitality/automation':
+        specifier: workspace:*
+        version: link:packages/automation
+      '@vitality/collaboration':
+        specifier: workspace:*
+        version: link:packages/collaboration
+      '@vitality/database':
+        specifier: workspace:*
+        version: link:packages/database
+      '@vitality/design-system':
+        specifier: workspace:*
+        version: link:packages/design-system
+      '@vitality/document-management':
+        specifier: workspace:*
+        version: link:packages/document-management
+      '@vitality/emotion-detection':
+        specifier: workspace:*
+        version: link:packages/emotion-detection
+      '@vitality/file-storage':
+        specifier: workspace:*
+        version: link:packages/file-storage
+      '@vitality/financial-tracking':
+        specifier: workspace:*
+        version: link:packages/financial-tracking
+      '@vitality/goal-tracking':
+        specifier: workspace:*
+        version: link:packages/goal-tracking
+      '@vitality/government-resources':
+        specifier: workspace:*
+        version: link:packages/government-resources
+      '@vitality/health-tracking':
+        specifier: workspace:*
+        version: link:packages/health-tracking
+      '@vitality/learning-tracking':
+        specifier: workspace:*
+        version: link:packages/learning-tracking
+      '@vitality/life-hacks':
+        specifier: workspace:*
+        version: link:packages/life-hacks
+      '@vitality/monitoring':
+        specifier: workspace:*
+        version: link:packages/monitoring
+      '@vitality/notifications':
+        specifier: workspace:*
+        version: link:packages/notifications
+      '@vitality/optimization':
+        specifier: workspace:*
+        version: link:packages/optimization
+      '@vitality/security':
+        specifier: workspace:*
+        version: link:packages/security
+      '@vitality/social-network':
+        specifier: workspace:*
+        version: link:packages/social-network
+      '@vitality/testing':
+        specifier: workspace:*
+        version: link:packages/testing
+      '@vitality/utils':
+        specifier: workspace:*
+        version: link:packages/utils
+      '@vitality/voice-processing':
+        specifier: workspace:*
+        version: link:packages/voice-processing
     devDependencies:
       '@types/node':
         specifier: ^20.14.2
         version: 20.19.11
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^8.40.0
+        version: 8.40.0(@typescript-eslint/parser@8.40.0)(eslint@8.57.1)(typescript@5.9.2)
+      '@typescript-eslint/parser':
+        specifier: ^8.40.0
+        version: 8.40.0(eslint@8.57.1)(typescript@5.9.2)
       eslint:
         specifier: ^8.57.0
         version: 8.57.1
