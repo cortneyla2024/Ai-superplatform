@@ -19,9 +19,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-// import { useAIService } from '@vitality/ai-service';
-// import { useEmotionDetection } from '@vitality/emotion-detection';
-// import { useVoiceProcessing } from '@vitality/voice-processing';
+import { useAIService } from '@vitality/ai-service';
+import { useEmotionDetection } from '@vitality/emotion-detection';
+import { useVoiceProcessing } from '@vitality/voice-processing';
 import { cn } from '@/lib/utils';
 
 interface Message {
@@ -50,29 +50,15 @@ export function AIAssistant() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // const { generateResponse, streamResponse } = useAIService();
-  // const { currentEmotion, startEmotionDetection, stopEmotionDetection } = useEmotionDetection();
-  // const { 
-  //   startRecording, 
-  //   stopRecording, 
-  //   isRecording, 
-  //   transcript, 
-  //   speak, 
-  //   isSpeaking 
-  // } = useVoiceProcessing();
-
-  // Temporary fallback values
-  const currentEmotion: string | undefined = undefined;
-  const startEmotionDetection = () => {};
-  const stopEmotionDetection = () => {};
-  const startRecording = () => {};
-  const stopRecording = () => {};
-  const isRecording = false;
-  const transcript: string = '';
-  const speak = (text: string) => {};
-  const isSpeaking = false;
-  const generateResponse = async () => 'This is a placeholder response.';
-  const streamResponse = async function* (content: string, options?: any) { yield 'This is a placeholder response.'; };
+  const { generateResponse, streamResponse } = useAIService();
+  const { detectFromText, getCurrentEmotion } = useEmotionDetection();
+  const { 
+    startRecording, 
+    stopRecording, 
+    speak, 
+    getRecordingStatus, 
+    getSpeakingStatus 
+  } = useVoiceProcessing();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -84,6 +70,10 @@ export function AIAssistant() {
 
   const handleSendMessage = async (content: string) => {
     if (!content.trim() || isLoading) return;
+
+    // Detect emotion from user input
+    const emotionResult = detectFromText(content);
+    const currentEmotion = emotionResult.emotion;
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -109,9 +99,10 @@ export function AIAssistant() {
       setMessages(prev => [...prev, streamingMessage]);
 
       // Stream response
-      const responseStream = streamResponse(content, {
+      const responseStream = streamResponse({
+        message: content,
+        context: messages.slice(-5).map(m => m.content).join(' '), // Last 5 messages for context
         emotion: currentEmotion,
-        context: messages.slice(-5), // Last 5 messages for context
       });
 
       let fullResponse = '';
@@ -137,7 +128,11 @@ export function AIAssistant() {
 
       // Speak the response if not muted
       if (!isMuted && fullResponse) {
-        speak(fullResponse);
+        try {
+          await speak(fullResponse);
+        } catch (error) {
+          console.warn('Speech synthesis failed:', error);
+        }
       }
     } catch (error) {
       console.error('Error generating response:', error);
@@ -149,31 +144,27 @@ export function AIAssistant() {
     }
   };
 
-  useEffect(() => {
-    if (transcript && transcript.trim()) {
-      setInputValue(transcript);
-      handleSendMessage(transcript);
-    }
-  }, [transcript]);
-
-  useEffect(() => {
-    if (isOpen) {
-      startEmotionDetection();
-      inputRef.current?.focus();
-    } else {
-      stopEmotionDetection();
-    }
-  }, [isOpen, startEmotionDetection, stopEmotionDetection]);
-
-
-
   const handleVoiceInput = async () => {
-    if (isRecording) {
-      await stopRecording();
-      setIsListening(false);
+    if (isListening) {
+      try {
+        setIsListening(false);
+        const result = await stopRecording();
+        if (result.text.trim()) {
+          setInputValue(result.text);
+          handleSendMessage(result.text);
+        }
+      } catch (error) {
+        console.error('Error stopping recording:', error);
+        setIsListening(false);
+      }
     } else {
-      setIsListening(true);
-      await startRecording();
+      try {
+        setIsListening(true);
+        await startRecording();
+      } catch (error) {
+        console.error('Error starting recording:', error);
+        setIsListening(false);
+      }
     }
   };
 
@@ -186,10 +177,24 @@ export function AIAssistant() {
 
   const toggleMute = () => {
     setIsMuted(!isMuted);
-    if (isSpeaking) {
+    if (getSpeakingStatus()) {
       // Stop current speech
+      // This would be handled by the voice processing service
     }
   };
+
+  // Update listening status based on voice processing service
+  useEffect(() => {
+    const checkRecordingStatus = () => {
+      const recordingStatus = getRecordingStatus();
+      if (recordingStatus !== isListening) {
+        setIsListening(recordingStatus);
+      }
+    };
+
+    const interval = setInterval(checkRecordingStatus, 100);
+    return () => clearInterval(interval);
+  }, [isListening, getRecordingStatus]);
 
   return (
     <>
@@ -253,7 +258,7 @@ export function AIAssistant() {
                     <div>
                       <h3 className="font-semibold">AI Assistant</h3>
                       <p className="text-xs text-muted-foreground">
-                        {currentEmotion ? `Detected: ${currentEmotion}` : 'Ready to help'}
+                        {getCurrentEmotion() ? `Detected: ${getCurrentEmotion()?.emotion}` : 'Ready to help'}
                       </p>
                     </div>
                   </div>
@@ -343,7 +348,7 @@ export function AIAssistant() {
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Type your message..."
-                      disabled={isLoading || isRecording}
+                      disabled={isLoading || isListening}
                       className="flex-1"
                     />
                     <Button
@@ -353,10 +358,10 @@ export function AIAssistant() {
                       disabled={isLoading}
                       className={cn(
                         'h-10 w-10',
-                        isRecording && 'bg-red-500 text-white hover:bg-red-600'
+                        isListening && 'bg-red-500 text-white hover:bg-red-600'
                       )}
                     >
-                      {isRecording ? (
+                      {isListening ? (
                         <MicOff className="h-4 w-4" />
                       ) : (
                         <Mic className="h-4 w-4" />

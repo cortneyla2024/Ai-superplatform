@@ -1,22 +1,55 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
+    appDir: true,
+    serverComponentsExternalPackages: ['@vitality/ai-service', '@vitality/auth', '@vitality/emotion-detection', '@vitality/voice-processing'],
   },
+  transpilePackages: [
+    '@vitality/ai-service',
+    '@vitality/auth',
+    '@vitality/emotion-detection',
+    '@vitality/voice-processing',
+    '@vitality/design-system',
+    '@vitality/utils',
+    '@vitality/analytics',
+    '@vitality/automation',
+    '@vitality/collaboration',
+    '@vitality/database',
+    '@vitality/document-management',
+    '@vitality/file-storage',
+    '@vitality/financial-tracking',
+    '@vitality/goal-tracking',
+    '@vitality/government-resources',
+    '@vitality/health-tracking',
+    '@vitality/learning-tracking',
+    '@vitality/life-hacks',
+    '@vitality/monitoring',
+    '@vitality/notifications',
+    '@vitality/optimization',
+    '@vitality/security',
+    '@vitality/social-network',
+    '@vitality/testing',
+  ],
   images: {
     domains: ['localhost'],
-    formats: ['image/webp', 'image/avif'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**',
+      },
+    ],
   },
   webpack: (config, { isServer }) => {
+    // Handle Web Speech API polyfills
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
         net: false,
         tls: false,
-        crypto: false,
       };
     }
+
     return config;
   },
   async headers() {
@@ -25,32 +58,41 @@ const nextConfig = {
         source: '/(.*)',
         headers: [
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
           },
           {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            key: 'X-Frame-Options',
+            value: 'DENY',
           },
           {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
           },
         ],
       },
     ];
   },
-  async rewrites() {
+  async redirects() {
     return [
       {
-        source: '/api/ai/:path*',
-        destination: 'http://localhost:4000/api/ai/:path*',
+        source: '/home',
+        destination: '/',
+        permanent: true,
       },
     ];
+  },
+  env: {
+    CUSTOM_KEY: process.env.CUSTOM_KEY,
+  },
+  // Optimize for Vercel
+  output: 'standalone',
+  poweredByHeader: false,
+  compress: true,
+  generateEtags: true,
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
   },
 };
 

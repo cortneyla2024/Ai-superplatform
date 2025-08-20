@@ -1,3 +1,4 @@
 // @vitality/voice-processing - Voice processing and speech recognition
 
-export * from './voice-processing';
+export { VoiceProcessingService, voiceProcessingService, useVoiceProcessing } from './voice-processing';
+export type { VoiceResult, SpeechOptions } from './voice-processing';

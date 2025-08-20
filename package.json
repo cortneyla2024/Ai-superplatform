@@ -1,7 +1,7 @@
 {
-  "name": "steward-omni-max",
+  "name": "careconnect-ai-platform",
   "version": "1.0.0",
-  "description": "Hope: The Steward – Omni Max - A complete, self-hostable, privacy-first platform",
+  "description": "CareConnect AI Platform - A comprehensive, privacy-first AI companion platform",
   "private": true,
   "scripts": {
     "dev": "turbo run dev",
@@ -23,7 +23,34 @@
     "docker:down": "docker-compose down",
     "docker:logs": "docker-compose logs -f",
     "health-check": "curl http://localhost:3000/api/health",
-    "validate-manifest": "node scripts/validate-manifest.js"
+    "validate-manifest": "node scripts/validate-manifest.js",
+    "vercel-build": "turbo run build"
+  },
+  "dependencies": {
+    "@vitality/ai-service": "workspace:*",
+    "@vitality/auth": "workspace:*",
+    "@vitality/emotion-detection": "workspace:*",
+    "@vitality/voice-processing": "workspace:*",
+    "@vitality/design-system": "workspace:*",
+    "@vitality/utils": "workspace:*",
+    "@vitality/analytics": "workspace:*",
+    "@vitality/automation": "workspace:*",
+    "@vitality/collaboration": "workspace:*",
+    "@vitality/database": "workspace:*",
+    "@vitality/document-management": "workspace:*",
+    "@vitality/file-storage": "workspace:*",
+    "@vitality/financial-tracking": "workspace:*",
+    "@vitality/goal-tracking": "workspace:*",
+    "@vitality/government-resources": "workspace:*",
+    "@vitality/health-tracking": "workspace:*",
+    "@vitality/learning-tracking": "workspace:*",
+    "@vitality/life-hacks": "workspace:*",
+    "@vitality/monitoring": "workspace:*",
+    "@vitality/notifications": "workspace:*",
+    "@vitality/optimization": "workspace:*",
+    "@vitality/security": "workspace:*",
+    "@vitality/social-network": "workspace:*",
+    "@vitality/testing": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "^20.14.2",
