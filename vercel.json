@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "turbo run build --filter=@vitality/web",
-  "outputDirectory": "apps/web/.next",
-  "installCommand": "pnpm install",
+  "rootDirectory": "apps/web",
+  "buildCommand": "pnpm run build",
+  "installCommand": "cd .. && pnpm install",
   "framework": "nextjs",
   "functions": {
-    "apps/web/app/api/**/*.ts": {
+    "app/api/**/*.ts": {
       "maxDuration": 30
     }
   },
